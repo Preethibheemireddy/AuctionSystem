@@ -1,0 +1,94 @@
+﻿@model Auction.Model.Message.UserAuction
+@{
+    ViewBag.Title = "CustomerBid";
+}
+
+<body style="background-color:white; ">
+
+    <div style="
+        display:inline;
+        position: absolute;
+        top: 150px;
+        left: 50px;
+        width: auto;
+        height: auto;
+        margin: auto;">
+
+        @if (Model != null)
+        {
+            @Html.ValidationSummary(true, "Error occured", new { @class = "text-danger" })
+            using (Html.BeginForm("UpdateCustomerBid", "Auction", FormMethod.Post))
+            {
+                <table>
+
+                    <tr style="color:black">
+                        <td style="font-size: large">
+
+                            @Html.Label("Product:")
+                            @Html.DisplayFor(model => model.Product_Name, new { @class = "" }) <br />
+                            @Html.HiddenFor(model => model.Product_Name, new { @class = "" })
+
+                            @Html.Label("Description:")
+                            @Html.DisplayFor(model => model.Product_description, new { @class = "" }) <br />
+                            @Html.HiddenFor(model => model.Product_description, new { @class = "" })
+
+                            @Html.Label("End Date:")
+                            @Html.DisplayFor(model => model.Product_bid_time, new { @class = "" }) <br />
+                            @Html.HiddenFor(model => model.Product_bid_time, new { @class = "" })
+
+                            @Html.Label("Status:")
+                            @Html.DisplayFor(model => model.BidStatus, new { @class = "" }) <br />
+                            @Html.HiddenFor(model => model.BidStatus, new { @class = "" })
+
+                            @Html.HiddenFor(model => model.Auction_Id, new { @class = "" })
+                            @Html.HiddenFor(model => model.Product_Id, new { @class = "" })
+
+                            @if (Model.CurrentHighestBidPrice != 0)
+                            {
+                                @Html.Label("Current Highest Bid:")
+                                @Html.DisplayFor(model => model.CurrentHighestBidPrice, new { @class = "" }) <br />
+                                @Html.HiddenFor(model => model.CurrentHighestBidPrice, new { @class = "" })
+
+
+                            }
+
+                            @Html.Label("Bid Price:")
+                            @Html.TextBoxFor(model => model.Bid_price, new { @class = "" }) <br />
+
+
+                        </td>
+
+                    </tr>
+                </table>
+                <br />
+                if (Model.BidStatus != "Active")
+                {
+                    <input type="submit" value="Submit" style="color:white; background-color:gray; font-size: large; " disabled="disabled" />
+                }
+                else
+                {
+                    <input type="submit" value="Submit" style="color:white; background-color:cornflowerblue; font-size: large" />
+                }
+            }
+        }
+        else
+        {
+            < table >
+            < tr >
+            < td style = "font-size: large" > There are no Bids </ td >
+
+
+
+
+            </ tr >
+
+
+
+
+            </ table >
+        }
+
+
+
+    </div>
+</body>

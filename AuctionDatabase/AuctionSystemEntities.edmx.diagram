@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f48da5a7e77a4e07bd4102570b70467a" Name="Diagram1">
+        <EntityTypeShape EntityType="auction_systemModel.auction" Width="1.5" PointX="5.25" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="auction_systemModel.bid_status" Width="1.5" PointX="3" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="auction_systemModel.bid_status_reason" Width="1.5" PointX="3" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="auction_systemModel.customer" Width="1.5" PointX="3" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="auction_systemModel.customer_address" Width="1.5" PointX="5.25" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="auction_systemModel.customer_payment" Width="1.5" PointX="7.5" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="auction_systemModel.customer_status" Width="1.5" PointX="0.75" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="auction_systemModel.order" Width="1.5" PointX="9.75" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="auction_systemModel.payment_method" Width="1.5" PointX="5.25" PointY="15" IsExpanded="true" />
+        <EntityTypeShape EntityType="auction_systemModel.product" Width="1.5" PointX="8.25" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="auction_systemModel.product_type" Width="1.5" PointX="6" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="auction_systemModel.status_reason" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="true" />
+        <AssociationConnector Association="auction_systemModel.FK__auction__bidstat__5629CD9C" ManuallyRouted="false" />
+        <AssociationConnector Association="auction_systemModel.FK__auction__custome__5812160E" ManuallyRouted="false" />
+        <AssociationConnector Association="auction_systemModel.FK__auction__product__5535A963" ManuallyRouted="false" />
+        <AssociationConnector Association="auction_systemModel.FK__auction__reason___571DF1D5" ManuallyRouted="false" />
+        <AssociationConnector Association="auction_systemModel.FK__order__auction_i__5BE2A6F2" ManuallyRouted="false" />
+        <AssociationConnector Association="auction_systemModel.FK__customer___custo__4222D4EF" ManuallyRouted="false" />
+        <AssociationConnector Association="auction_systemModel.FK__customer___custo__47DBAE45" ManuallyRouted="false" />
+        <AssociationConnector Association="auction_systemModel.FK__customer__status__3E52440B" ManuallyRouted="false" />
+        <AssociationConnector Association="auction_systemModel.FK__customer__status__3F466844" ManuallyRouted="false" />
+        <AssociationConnector Association="auction_systemModel.FK__order__customer___5CD6CB2B" ManuallyRouted="false" />
+        <AssociationConnector Association="auction_systemModel.FK__product__custome__5070F446" ManuallyRouted="false" />
+        <AssociationConnector Association="auction_systemModel.FK__customer___addre__48CFD27E" ManuallyRouted="false" />
+        <AssociationConnector Association="auction_systemModel.FK__customer___payme__46E78A0C" ManuallyRouted="false" />
+        <AssociationConnector Association="auction_systemModel.FK__customer___statu__49C3F6B7" ManuallyRouted="false" />
+        <AssociationConnector Association="auction_systemModel.FK__customer___statu__4AB81AF0" ManuallyRouted="false" />
+        <AssociationConnector Association="auction_systemModel.FK__order__customer___5AEE82B9" ManuallyRouted="false" />
+        <AssociationConnector Association="auction_systemModel.FK__order__status_id__5DCAEF64" ManuallyRouted="false" />
+        <AssociationConnector Association="auction_systemModel.FK__product__status___5165187F" ManuallyRouted="false" />
+        <AssociationConnector Association="auction_systemModel.FK__order__status_re__5EBF139D" ManuallyRouted="false" />
+        <AssociationConnector Association="auction_systemModel.FK__product__product__4F7CD00D" ManuallyRouted="false" />
+        <AssociationConnector Association="auction_systemModel.FK__product__status___52593CB8" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

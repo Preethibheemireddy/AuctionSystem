@@ -1,0 +1,46 @@
+﻿@model AuctionModel.LoginModelRequest
+@{
+    ViewBag.Title = "Index";
+}
+
+<body style="background-color:white; ">
+        
+        @*<img src="C:\Users\jagad\OneDrive\Documents\Visual Studio 2017\Projects\AuctionSystem\AuctionSystem\Content\Auction-gavel-1.jpg" style='width:100%; height: 100%; background-position: center; background-attachment: fixed; background-size: cover; background-repeat: no-repeat' alt='[]' />*@
+
+    <div style="text-align: inherit;
+        display: inherit;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 200px;
+        height: 100px;
+        margin: auto;">
+
+        <h2 style="color: black; position: center; font: 100">Login</h2>
+
+        @Html.ValidationSummary(true, "Login was unsuccessful. Please correct the errors and try again.", new { @class = "text-danger" })
+
+        @using (Html.BeginForm("Signin", "Login", FormMethod.Post))
+        {
+            <div>
+                <label style="color: black; font-size: large"> Email: </label>
+                @Html.TextBoxFor(m => m.Email,  new { @class = "form-control" }) <br />
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+            </div>
+
+            <div>
+                <label style="color: black; font-size: large"> Password: </label>
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control" }) <br />
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+            </div>
+
+
+            <input type="submit" value="Login" style="color:white; background-color:cornflowerblue; font-size: large" />
+
+        }
+
+    </div>
+
+</body>

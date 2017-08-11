@@ -1,0 +1,89 @@
+﻿@model Auction.Model.Message.ProductModel
+@{
+    ViewBag.Title = "ProductView";
+}
+
+<body style="background-color:blanchedalmond; ">
+
+
+    <div style="
+        display:inline;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: auto;
+        width: 200px;
+        height: 100px;
+        margin: auto;">
+       
+        @if (Model != null)
+        {
+               
+                using (Html.BeginForm("UserBid", "Auction", FormMethod.Post))
+                {
+
+                double? Bid_price = ViewData["BidPrice"] as double?;
+                <table>
+
+                    <tr style="color:black">
+                        <td style= "width: auto; height: 100px; font:600; font-family: 'Times New Roman', Times, serif">
+                            @Html.Label("Product") <br />
+                            @Html.DisplayFor(model => model.product.Product_Name, new { @class = "" }) <br />
+
+                            @Html.Label("Description") <br />
+                            @Html.DisplayFor(model => model.product.Product_description, new { @class = "" }) <br />
+
+                            @Html.Label("End Date") <br />
+                            @Html.DisplayFor(model => model.product.Product_bid_time, new { @class = "" }) <br />
+
+                            @Html.Label("Status") <br />
+                            @Html.DisplayFor(model => model.product.Status, new { @class = "" }) <br />
+
+                            @if (Model.product.CurrentHighestBid == 0)
+                            {
+                                @Html.Label("Min Bid Price")                                <br />
+                                @Html.DisplayFor(model => model.product.Product_bid_price, new { @class = "" }) <br />
+
+                            }
+                            else
+                            {
+                                @Html.Label("Current Highest Bid") <br />
+
+                                @Html.DisplayFor(model => model.product.CurrentHighestBid, new { @class = "" }) <br />
+                            }
+                           
+                            
+
+                        </td>
+
+                    </tr>
+                </table>
+
+                <div>
+                    <label style="color: black"> Bid Price: </label>
+                    @Html.TextBox("Bid_price", new { @class = "form-control" }) <br />
+                    @Html.ValidationMessageFor(m => m.Bid_price, "", new { @class = "text-danger" })
+                </div>
+
+                <input type="submit" value="Submit" style="color:white; background-color:cornflowerblue" />
+                }
+                
+
+            
+        }
+
+        else
+        {
+            <table>
+                <tr>
+                    <td> There is no Product </td>
+                </tr>
+            </table>
+        }
+
+
+    </div>
+</body>
+
+
+

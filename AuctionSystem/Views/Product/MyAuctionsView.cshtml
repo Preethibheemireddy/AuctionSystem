@@ -1,0 +1,57 @@
+﻿@model Auction.Model.Message.ProductResponse
+@{
+    ViewBag.Title = "MyAuctionsView";
+}
+
+<body style="background-color:white; ">
+
+
+    <div style="
+        display:inline;
+        position: absolute;
+        top: 150px;
+        left: 50px;
+        width: auto;
+        height: auto;
+        margin: auto;">
+        
+
+
+        @if (Model.Products.Count != 0)
+        {
+
+            for (int i = 0; i < Model.Products.Count; i++)
+            {
+                var Name = Model.Products[i].Product_Name;
+                <table>
+
+                    <tr style="color:black">
+                        <td style="font-size: large">
+                            @Html.ActionLink(Name, "DisplayCustomerProduct", "Product", new { productid = Model.Products[i].ProductID }, null)
+                            <br />
+                            @Html.Label("End Date:")
+                            @Html.DisplayFor(model => model.Products[i].Product_bid_time, new { @class = "" })
+
+                        </td>
+
+                    </tr>
+                </table>
+            }
+        }
+
+        else
+        {
+            <table>
+                <tr>
+                    <td> There are no Auctions </td>
+                </tr>
+            </table>
+        }
+
+
+
+    </div>
+</body>
+
+
+

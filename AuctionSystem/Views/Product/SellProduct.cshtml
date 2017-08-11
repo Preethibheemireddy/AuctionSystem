@@ -1,0 +1,63 @@
+﻿
+@model Auction.Model.Message.ProductRequest
+@{
+    ViewBag.Title = "SellProduct";
+}
+<body style="background-color:white; ">
+
+    <div style="text-align: inherit;
+        display: inherit;
+        position: absolute;
+        top: 150px;
+        left: 50px;
+        width: auto;
+        height: auto;
+        margin: auto;">
+
+
+        @Html.ValidationSummary(true, "Please correct the errors and try again.", new { @class = "text-danger" })
+        @using (Html.BeginForm("AddProduct", "Product", FormMethod.Post))
+        {
+            List<Auction.Model.Message.ProductTypes> products = TempData["products"] as List<Auction.Model.Message.ProductTypes>;
+
+            <div style="font-size: medium">
+                <label style="color: black"> Select Category: </label>
+                @Html.DropDownListFor(m => m.ProductType_Id, new SelectList(products, "ProductType_Id", "Product_type"), new { @class = "form-control" }) <br />
+
+
+            </div>
+
+            <div style="font-size: medium">
+                <label style="color: black"> Product Name: </label>
+                @Html.TextBoxFor(m => m.Product_Name, new { @class = "form-control" }) <br />
+                @Html.ValidationMessageFor(m => m.Product_Name, "", new { @class = "text-danger" })
+            </div>
+
+            <div style="font-size: medium">
+                <label style="color: black"> Product Description: </label>
+                @Html.TextBoxFor(m => m.Product_description, new { @class = "form-control" }) <br />
+                @Html.ValidationMessageFor(m => m.Product_description, "", new { @class = "text-danger" })
+            </div>
+            <div style="font-size: medium">
+                <label style="color: black"> Product Bid Time: </label>
+                @Html.TextBoxFor(m => m.Product_bid_time, new { @class = "form-control" }) <br />
+                @Html.ValidationMessageFor(m => m.Product_bid_time, "", new { @class = "text-danger" })
+            </div>
+
+            <div style="font-size: medium">
+                <label style="color: black"> Product Bid Price: </label>
+                @Html.TextBoxFor(m => m.Product_bid_price, new { @class = "form-control" }) <br />
+                @Html.ValidationMessageFor(m => m.Product_bid_price, "", new { @class = "text-danger" })
+            </div>
+
+            <div style="font-size: medium">
+                <label style="color: black"> Max Price: </label>
+                @Html.TextBoxFor(m => m.Max_Price, new { @class = "form-control" }) <br />
+                @Html.ValidationMessageFor(m => m.Max_Price, "", new { @class = "text-danger" })
+            </div>
+            <input type="submit" value="Submit" style="color:white; background-color:cornflowerblue; font-size: large" />
+
+        }
+
+    </div>
+</body>

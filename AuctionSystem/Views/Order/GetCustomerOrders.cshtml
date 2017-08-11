@@ -1,0 +1,66 @@
+﻿@model Auction.Model.Message.OrdersResponse
+@{
+    ViewBag.Title = "Orders";
+}
+
+<body style="background-color:white; ">
+
+    <div style="
+        display:inline;
+        position: absolute;
+        top: 100px;
+        left: 50px;
+        width: auto;
+        height: auto;
+        margin: auto;">
+
+        <h2 style="font-size: x-large; font: bold; color: forestgreen"> Orders </h2> <br />
+
+        @if (Model.CustomerOrders.Count != 0)
+        {
+
+            for (int i = 0; i < Model.CustomerOrders.Count; i++)
+            {
+                var Name = Model.CustomerOrders[i].Product_name;
+                <table>
+
+                    <tr style="color:black">
+                        <td style="font-size: large">
+                            @Html.ActionLink(Name, "DisplayCustomerOrder", "Order", new {  orderid = Model.CustomerOrders[i].Order_ID }, null)
+
+                            <br />  @Html.Label("Order Amount:")
+                            @Html.DisplayFor(model => model.CustomerOrders[i].Order_amount, new { @class = "" })
+
+                        </td>
+
+                    </tr>
+                </table>
+            }
+        }
+
+        else
+        {
+            if (Model.Fault != null)
+            {
+                <table>
+                    <tr>
+                        <td style="font-size: large"> @Html.DisplayText(Model.Fault.Message) </td>
+                    </tr>
+                </table>
+            }
+            <table>
+                <tr>
+                    <td style="font-size: large"> There are no Orders </td>
+                </tr>
+            </table>
+        }
+
+
+
+
+
+
+
+
+    </div>
+</body>

@@ -1,0 +1,24 @@
+﻿
+
+@{
+    ViewBag.Title = "Partial";
+}
+
+@if (ViewBag.LoginSuccess == "False")
+{
+    
+        <ul class="nav navbar-nav navbar-right" style="font-size:large; color: white">
+            <li>@Html.ActionLink("Register", "Index", "Register", new { id = "" }, null)</li>
+
+            <li>@Html.ActionLink("Log in", "Index", "Login", new { id = "" }, null)</li>
+        </ul>
+       
+        }
+
+        else if (ViewBag.LoginSuccess == "True")
+        {
+        <ul class="nav navbar-nav navbar-right" style="font-size:large; color: white" >
+            <li>@Html.ActionLink("Log Out", "LogOut", "Login", new { id = "" }, null)</li>
+        </ul>
+        }
+

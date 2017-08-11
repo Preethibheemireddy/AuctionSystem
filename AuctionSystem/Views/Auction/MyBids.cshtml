@@ -1,0 +1,52 @@
+﻿@model Auction.Model.Message.AuctionResponse
+    @{
+        ViewBag.Title = "AuctionsView";
+    }
+
+    <body style="background-color:white; ">
+
+
+    <div style="
+        display:inline;
+        position: absolute;
+        top: 150px;
+        left: 50px;
+        width: auto;
+        height: auto;
+        margin: auto;">
+
+        @if (Model.Auctions.Count != 0)
+            {
+                for (int i = 0; i < Model.Auctions.Count; i++)
+                {
+                    var name = Model.Auctions[i].Product_Name;
+                <table>
+
+                    <tr style="color:black">
+                        <td style="font-size: large">
+                            @Html.ActionLink(name, "MyBidDetail", "Auction", new { auctionid = Model.Auctions[i].Auction_Id }, null)
+                            <br />  @Html.Label("End Date:")
+                            @Html.DisplayFor(model => model.Auctions[i].Product_bid_time, new { @class = "" })
+
+                        </td>
+
+                    </tr>
+                </table>
+            }
+        }
+
+        else
+        {
+            <table>
+                <tr>
+                    <td style="font-size: large"> There are no Bids</td>
+                </tr>
+            </table>
+        }
+
+
+
+    </div>
+</body>
+    
+

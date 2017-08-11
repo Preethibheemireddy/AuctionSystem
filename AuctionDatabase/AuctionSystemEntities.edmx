@@ -1,0 +1,1165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="auction_systemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="auction">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="product_id" Type="int" />
+          <Property Name="bid_price" Type="float" Nullable="false" />
+          <Property Name="auction_datetime" Type="date" Nullable="false" />
+          <Property Name="bidstatus_id" Type="int" />
+          <Property Name="reason_id" Type="int" />
+          <Property Name="customer_id" Type="int" />
+        </EntityType>
+        <EntityType Name="bid_status">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="status" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bid_status_reason">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="status_reason" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="customer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="customer_lastname" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="customer_firstname" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="customer_phone" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="customer_email" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="customer_password" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="status_id" Type="int" />
+          <Property Name="status_reason_id" Type="int" />
+        </EntityType>
+        <EntityType Name="customer_address">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="customer_id" Type="int" />
+          <Property Name="Address1" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Address2" Type="varchar" MaxLength="255" />
+          <Property Name="City" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Address_State" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Zipcode" Type="int" Nullable="false" />
+          <Property Name="country" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="customer_payment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="payment_method_id" Type="int" />
+          <Property Name="customer_id" Type="int" />
+          <Property Name="address_id" Type="int" />
+          <Property Name="status_id" Type="int" />
+          <Property Name="status_reason_id" Type="int" />
+          <Property Name="card_number" Type="int" Nullable="false" />
+          <Property Name="card_pin" Type="int" Nullable="false" />
+          <Property Name="card_expirydate" Type="date" Nullable="false" />
+          <Property Name="card_holdername" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="customer_status">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="status" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="order">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="order_amount" Type="int" Nullable="false" />
+          <Property Name="order_datetime" Type="date" Nullable="false" />
+          <Property Name="customer_payment_id" Type="int" />
+          <Property Name="auction_id" Type="int" />
+          <Property Name="customer_id" Type="int" />
+          <Property Name="status_id" Type="int" />
+          <Property Name="status_reason_id" Type="int" />
+        </EntityType>
+        <EntityType Name="payment_method">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="payment_method" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="product">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="product_type_id" Type="int" />
+          <Property Name="product_Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="product_bid_price" Type="float" Nullable="false" />
+          <Property Name="product_bid_time" Type="date" Nullable="false" />
+          <Property Name="customer_id" Type="int" />
+          <Property Name="status_id" Type="int" />
+          <Property Name="status_reason_id" Type="int" />
+          <Property Name="product_description" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="max_price" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="product_type">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="type" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="status_reason">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="reason" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__auction__bidstat__5629CD9C">
+          <End Role="bid_status" Type="Self.bid_status" Multiplicity="0..1" />
+          <End Role="auction" Type="Self.auction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bid_status">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="auction">
+              <PropertyRef Name="bidstatus_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__auction__custome__5812160E">
+          <End Role="customer" Type="Self.customer" Multiplicity="0..1" />
+          <End Role="auction" Type="Self.auction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="auction">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__auction__product__5535A963">
+          <End Role="product" Type="Self.product" Multiplicity="0..1" />
+          <End Role="auction" Type="Self.auction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="product">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="auction">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__auction__reason___571DF1D5">
+          <End Role="bid_status_reason" Type="Self.bid_status_reason" Multiplicity="0..1" />
+          <End Role="auction" Type="Self.auction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bid_status_reason">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="auction">
+              <PropertyRef Name="reason_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__customer___addre__48CFD27E">
+          <End Role="customer_address" Type="Self.customer_address" Multiplicity="0..1" />
+          <End Role="customer_payment" Type="Self.customer_payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer_address">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="customer_payment">
+              <PropertyRef Name="address_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__customer___custo__4222D4EF">
+          <End Role="customer" Type="Self.customer" Multiplicity="0..1" />
+          <End Role="customer_address" Type="Self.customer_address" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="customer_address">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__customer___custo__47DBAE45">
+          <End Role="customer" Type="Self.customer" Multiplicity="0..1" />
+          <End Role="customer_payment" Type="Self.customer_payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="customer_payment">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__customer___payme__46E78A0C">
+          <End Role="payment_method" Type="Self.payment_method" Multiplicity="0..1" />
+          <End Role="customer_payment" Type="Self.customer_payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="payment_method">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="customer_payment">
+              <PropertyRef Name="payment_method_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__customer___statu__49C3F6B7">
+          <End Role="customer_status" Type="Self.customer_status" Multiplicity="0..1" />
+          <End Role="customer_payment" Type="Self.customer_payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer_status">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="customer_payment">
+              <PropertyRef Name="status_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__customer___statu__4AB81AF0">
+          <End Role="status_reason" Type="Self.status_reason" Multiplicity="0..1" />
+          <End Role="customer_payment" Type="Self.customer_payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="status_reason">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="customer_payment">
+              <PropertyRef Name="status_reason_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__customer__status__3E52440B">
+          <End Role="customer_status" Type="Self.customer_status" Multiplicity="0..1" />
+          <End Role="customer" Type="Self.customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer_status">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="customer">
+              <PropertyRef Name="status_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__customer__status__3F466844">
+          <End Role="status_reason" Type="Self.status_reason" Multiplicity="0..1" />
+          <End Role="customer" Type="Self.customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="status_reason">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="customer">
+              <PropertyRef Name="status_reason_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__order__auction_i__5BE2A6F2">
+          <End Role="auction" Type="Self.auction" Multiplicity="0..1" />
+          <End Role="order" Type="Self.order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="auction">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="order">
+              <PropertyRef Name="auction_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__order__customer___5AEE82B9">
+          <End Role="customer_payment" Type="Self.customer_payment" Multiplicity="0..1" />
+          <End Role="order" Type="Self.order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer_payment">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="order">
+              <PropertyRef Name="customer_payment_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__order__customer___5CD6CB2B">
+          <End Role="customer" Type="Self.customer" Multiplicity="0..1" />
+          <End Role="order" Type="Self.order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="order">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__order__status_id__5DCAEF64">
+          <End Role="customer_status" Type="Self.customer_status" Multiplicity="0..1" />
+          <End Role="order" Type="Self.order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer_status">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="order">
+              <PropertyRef Name="status_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__order__status_re__5EBF139D">
+          <End Role="status_reason" Type="Self.status_reason" Multiplicity="0..1" />
+          <End Role="order" Type="Self.order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="status_reason">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="order">
+              <PropertyRef Name="status_reason_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__product__custome__5070F446">
+          <End Role="customer" Type="Self.customer" Multiplicity="0..1" />
+          <End Role="product" Type="Self.product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="product">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__product__product__4F7CD00D">
+          <End Role="product_type" Type="Self.product_type" Multiplicity="0..1" />
+          <End Role="product" Type="Self.product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="product_type">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="product">
+              <PropertyRef Name="product_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__product__status___5165187F">
+          <End Role="customer_status" Type="Self.customer_status" Multiplicity="0..1" />
+          <End Role="product" Type="Self.product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer_status">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="product">
+              <PropertyRef Name="status_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__product__status___52593CB8">
+          <End Role="status_reason" Type="Self.status_reason" Multiplicity="0..1" />
+          <End Role="product" Type="Self.product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="status_reason">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="product">
+              <PropertyRef Name="status_reason_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="auction_systemModelStoreContainer">
+          <EntitySet Name="auction" EntityType="Self.auction" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bid_status" EntityType="Self.bid_status" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bid_status_reason" EntityType="Self.bid_status_reason" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="customer" EntityType="Self.customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="customer_address" EntityType="Self.customer_address" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="customer_payment" EntityType="Self.customer_payment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="customer_status" EntityType="Self.customer_status" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="order" EntityType="Self.order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="payment_method" EntityType="Self.payment_method" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="product" EntityType="Self.product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="product_type" EntityType="Self.product_type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="status_reason" EntityType="Self.status_reason" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__auction__bidstat__5629CD9C" Association="Self.FK__auction__bidstat__5629CD9C">
+            <End Role="bid_status" EntitySet="bid_status" />
+            <End Role="auction" EntitySet="auction" />
+          </AssociationSet>
+          <AssociationSet Name="FK__auction__custome__5812160E" Association="Self.FK__auction__custome__5812160E">
+            <End Role="customer" EntitySet="customer" />
+            <End Role="auction" EntitySet="auction" />
+          </AssociationSet>
+          <AssociationSet Name="FK__auction__product__5535A963" Association="Self.FK__auction__product__5535A963">
+            <End Role="product" EntitySet="product" />
+            <End Role="auction" EntitySet="auction" />
+          </AssociationSet>
+          <AssociationSet Name="FK__auction__reason___571DF1D5" Association="Self.FK__auction__reason___571DF1D5">
+            <End Role="bid_status_reason" EntitySet="bid_status_reason" />
+            <End Role="auction" EntitySet="auction" />
+          </AssociationSet>
+          <AssociationSet Name="FK__customer___addre__48CFD27E" Association="Self.FK__customer___addre__48CFD27E">
+            <End Role="customer_address" EntitySet="customer_address" />
+            <End Role="customer_payment" EntitySet="customer_payment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__customer___custo__4222D4EF" Association="Self.FK__customer___custo__4222D4EF">
+            <End Role="customer" EntitySet="customer" />
+            <End Role="customer_address" EntitySet="customer_address" />
+          </AssociationSet>
+          <AssociationSet Name="FK__customer___custo__47DBAE45" Association="Self.FK__customer___custo__47DBAE45">
+            <End Role="customer" EntitySet="customer" />
+            <End Role="customer_payment" EntitySet="customer_payment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__customer___payme__46E78A0C" Association="Self.FK__customer___payme__46E78A0C">
+            <End Role="payment_method" EntitySet="payment_method" />
+            <End Role="customer_payment" EntitySet="customer_payment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__customer___statu__49C3F6B7" Association="Self.FK__customer___statu__49C3F6B7">
+            <End Role="customer_status" EntitySet="customer_status" />
+            <End Role="customer_payment" EntitySet="customer_payment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__customer___statu__4AB81AF0" Association="Self.FK__customer___statu__4AB81AF0">
+            <End Role="status_reason" EntitySet="status_reason" />
+            <End Role="customer_payment" EntitySet="customer_payment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__customer__status__3E52440B" Association="Self.FK__customer__status__3E52440B">
+            <End Role="customer_status" EntitySet="customer_status" />
+            <End Role="customer" EntitySet="customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK__customer__status__3F466844" Association="Self.FK__customer__status__3F466844">
+            <End Role="status_reason" EntitySet="status_reason" />
+            <End Role="customer" EntitySet="customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK__order__auction_i__5BE2A6F2" Association="Self.FK__order__auction_i__5BE2A6F2">
+            <End Role="auction" EntitySet="auction" />
+            <End Role="order" EntitySet="order" />
+          </AssociationSet>
+          <AssociationSet Name="FK__order__customer___5AEE82B9" Association="Self.FK__order__customer___5AEE82B9">
+            <End Role="customer_payment" EntitySet="customer_payment" />
+            <End Role="order" EntitySet="order" />
+          </AssociationSet>
+          <AssociationSet Name="FK__order__customer___5CD6CB2B" Association="Self.FK__order__customer___5CD6CB2B">
+            <End Role="customer" EntitySet="customer" />
+            <End Role="order" EntitySet="order" />
+          </AssociationSet>
+          <AssociationSet Name="FK__order__status_id__5DCAEF64" Association="Self.FK__order__status_id__5DCAEF64">
+            <End Role="customer_status" EntitySet="customer_status" />
+            <End Role="order" EntitySet="order" />
+          </AssociationSet>
+          <AssociationSet Name="FK__order__status_re__5EBF139D" Association="Self.FK__order__status_re__5EBF139D">
+            <End Role="status_reason" EntitySet="status_reason" />
+            <End Role="order" EntitySet="order" />
+          </AssociationSet>
+          <AssociationSet Name="FK__product__custome__5070F446" Association="Self.FK__product__custome__5070F446">
+            <End Role="customer" EntitySet="customer" />
+            <End Role="product" EntitySet="product" />
+          </AssociationSet>
+          <AssociationSet Name="FK__product__product__4F7CD00D" Association="Self.FK__product__product__4F7CD00D">
+            <End Role="product_type" EntitySet="product_type" />
+            <End Role="product" EntitySet="product" />
+          </AssociationSet>
+          <AssociationSet Name="FK__product__status___5165187F" Association="Self.FK__product__status___5165187F">
+            <End Role="customer_status" EntitySet="customer_status" />
+            <End Role="product" EntitySet="product" />
+          </AssociationSet>
+          <AssociationSet Name="FK__product__status___52593CB8" Association="Self.FK__product__status___52593CB8">
+            <End Role="status_reason" EntitySet="status_reason" />
+            <End Role="product" EntitySet="product" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="auction_systemModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="auction">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="product_id" Type="Int32" />
+          <Property Name="bid_price" Type="Double" Nullable="false" />
+          <Property Name="auction_datetime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="bidstatus_id" Type="Int32" />
+          <Property Name="reason_id" Type="Int32" />
+          <Property Name="customer_id" Type="Int32" />
+          <NavigationProperty Name="bid_status" Relationship="Self.FK__auction__bidstat__5629CD9C" FromRole="auction" ToRole="bid_status" />
+          <NavigationProperty Name="customer" Relationship="Self.FK__auction__custome__5812160E" FromRole="auction" ToRole="customer" />
+          <NavigationProperty Name="product" Relationship="Self.FK__auction__product__5535A963" FromRole="auction" ToRole="product" />
+          <NavigationProperty Name="bid_status_reason" Relationship="Self.FK__auction__reason___571DF1D5" FromRole="auction" ToRole="bid_status_reason" />
+          <NavigationProperty Name="orders" Relationship="Self.FK__order__auction_i__5BE2A6F2" FromRole="auction" ToRole="order" />
+        </EntityType>
+        <EntityType Name="bid_status">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="status" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="auctions" Relationship="Self.FK__auction__bidstat__5629CD9C" FromRole="bid_status" ToRole="auction" />
+        </EntityType>
+        <EntityType Name="bid_status_reason">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="status_reason" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="auctions" Relationship="Self.FK__auction__reason___571DF1D5" FromRole="bid_status_reason" ToRole="auction" />
+        </EntityType>
+        <EntityType Name="customer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="customer_lastname" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="customer_firstname" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="customer_phone" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="customer_email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="customer_password" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="status_id" Type="Int32" />
+          <Property Name="status_reason_id" Type="Int32" />
+          <NavigationProperty Name="auctions" Relationship="Self.FK__auction__custome__5812160E" FromRole="customer" ToRole="auction" />
+          <NavigationProperty Name="customer_address" Relationship="Self.FK__customer___custo__4222D4EF" FromRole="customer" ToRole="customer_address" />
+          <NavigationProperty Name="customer_payment" Relationship="Self.FK__customer___custo__47DBAE45" FromRole="customer" ToRole="customer_payment" />
+          <NavigationProperty Name="customer_status" Relationship="Self.FK__customer__status__3E52440B" FromRole="customer" ToRole="customer_status" />
+          <NavigationProperty Name="status_reason" Relationship="Self.FK__customer__status__3F466844" FromRole="customer" ToRole="status_reason" />
+          <NavigationProperty Name="orders" Relationship="Self.FK__order__customer___5CD6CB2B" FromRole="customer" ToRole="order" />
+          <NavigationProperty Name="products" Relationship="Self.FK__product__custome__5070F446" FromRole="customer" ToRole="product" />
+        </EntityType>
+        <EntityType Name="customer_address">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="customer_id" Type="Int32" />
+          <Property Name="Address1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Address2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Address_State" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Zipcode" Type="Int32" Nullable="false" />
+          <Property Name="country" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="customer" Relationship="Self.FK__customer___custo__4222D4EF" FromRole="customer_address" ToRole="customer" />
+          <NavigationProperty Name="customer_payment" Relationship="Self.FK__customer___addre__48CFD27E" FromRole="customer_address" ToRole="customer_payment" />
+        </EntityType>
+        <EntityType Name="customer_payment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="payment_method_id" Type="Int32" />
+          <Property Name="customer_id" Type="Int32" />
+          <Property Name="address_id" Type="Int32" />
+          <Property Name="status_id" Type="Int32" />
+          <Property Name="status_reason_id" Type="Int32" />
+          <Property Name="card_number" Type="Int32" Nullable="false" />
+          <Property Name="card_pin" Type="Int32" Nullable="false" />
+          <Property Name="card_expirydate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="card_holdername" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="customer" Relationship="Self.FK__customer___custo__47DBAE45" FromRole="customer_payment" ToRole="customer" />
+          <NavigationProperty Name="customer_address" Relationship="Self.FK__customer___addre__48CFD27E" FromRole="customer_payment" ToRole="customer_address" />
+          <NavigationProperty Name="payment_method" Relationship="Self.FK__customer___payme__46E78A0C" FromRole="customer_payment" ToRole="payment_method" />
+          <NavigationProperty Name="customer_status" Relationship="Self.FK__customer___statu__49C3F6B7" FromRole="customer_payment" ToRole="customer_status" />
+          <NavigationProperty Name="status_reason" Relationship="Self.FK__customer___statu__4AB81AF0" FromRole="customer_payment" ToRole="status_reason" />
+          <NavigationProperty Name="orders" Relationship="Self.FK__order__customer___5AEE82B9" FromRole="customer_payment" ToRole="order" />
+        </EntityType>
+        <EntityType Name="customer_status">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="status" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="customers" Relationship="Self.FK__customer__status__3E52440B" FromRole="customer_status" ToRole="customer" />
+          <NavigationProperty Name="customer_payment" Relationship="Self.FK__customer___statu__49C3F6B7" FromRole="customer_status" ToRole="customer_payment" />
+          <NavigationProperty Name="orders" Relationship="Self.FK__order__status_id__5DCAEF64" FromRole="customer_status" ToRole="order" />
+          <NavigationProperty Name="products" Relationship="Self.FK__product__status___5165187F" FromRole="customer_status" ToRole="product" />
+        </EntityType>
+        <EntityType Name="order">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="order_amount" Type="Int32" Nullable="false" />
+          <Property Name="order_datetime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="customer_payment_id" Type="Int32" />
+          <Property Name="auction_id" Type="Int32" />
+          <Property Name="customer_id" Type="Int32" />
+          <Property Name="status_id" Type="Int32" />
+          <Property Name="status_reason_id" Type="Int32" />
+          <NavigationProperty Name="auction" Relationship="Self.FK__order__auction_i__5BE2A6F2" FromRole="order" ToRole="auction" />
+          <NavigationProperty Name="customer" Relationship="Self.FK__order__customer___5CD6CB2B" FromRole="order" ToRole="customer" />
+          <NavigationProperty Name="customer_payment" Relationship="Self.FK__order__customer___5AEE82B9" FromRole="order" ToRole="customer_payment" />
+          <NavigationProperty Name="customer_status" Relationship="Self.FK__order__status_id__5DCAEF64" FromRole="order" ToRole="customer_status" />
+          <NavigationProperty Name="status_reason" Relationship="Self.FK__order__status_re__5EBF139D" FromRole="order" ToRole="status_reason" />
+        </EntityType>
+        <EntityType Name="payment_method">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="payment_method1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="customer_payment" Relationship="Self.FK__customer___payme__46E78A0C" FromRole="payment_method" ToRole="customer_payment" />
+        </EntityType>
+        <EntityType Name="product">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="product_type_id" Type="Int32" />
+          <Property Name="product_Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="product_bid_price" Type="Double" Nullable="false" />
+          <Property Name="product_bid_time" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="customer_id" Type="Int32" />
+          <Property Name="status_id" Type="Int32" />
+          <Property Name="status_reason_id" Type="Int32" />
+          <Property Name="product_description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="max_price" Type="Double" Nullable="false" />
+          <NavigationProperty Name="auctions" Relationship="Self.FK__auction__product__5535A963" FromRole="product" ToRole="auction" />
+          <NavigationProperty Name="customer" Relationship="Self.FK__product__custome__5070F446" FromRole="product" ToRole="customer" />
+          <NavigationProperty Name="customer_status" Relationship="Self.FK__product__status___5165187F" FromRole="product" ToRole="customer_status" />
+          <NavigationProperty Name="product_type" Relationship="Self.FK__product__product__4F7CD00D" FromRole="product" ToRole="product_type" />
+          <NavigationProperty Name="status_reason" Relationship="Self.FK__product__status___52593CB8" FromRole="product" ToRole="status_reason" />
+        </EntityType>
+        <EntityType Name="product_type">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="products" Relationship="Self.FK__product__product__4F7CD00D" FromRole="product_type" ToRole="product" />
+        </EntityType>
+        <EntityType Name="status_reason">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="reason" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="customers" Relationship="Self.FK__customer__status__3F466844" FromRole="status_reason" ToRole="customer" />
+          <NavigationProperty Name="customer_payment" Relationship="Self.FK__customer___statu__4AB81AF0" FromRole="status_reason" ToRole="customer_payment" />
+          <NavigationProperty Name="orders" Relationship="Self.FK__order__status_re__5EBF139D" FromRole="status_reason" ToRole="order" />
+          <NavigationProperty Name="products" Relationship="Self.FK__product__status___52593CB8" FromRole="status_reason" ToRole="product" />
+        </EntityType>
+        <Association Name="FK__auction__bidstat__5629CD9C">
+          <End Role="bid_status" Type="Self.bid_status" Multiplicity="0..1" />
+          <End Role="auction" Type="Self.auction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bid_status">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="auction">
+              <PropertyRef Name="bidstatus_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__auction__custome__5812160E">
+          <End Role="customer" Type="Self.customer" Multiplicity="0..1" />
+          <End Role="auction" Type="Self.auction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="auction">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__auction__product__5535A963">
+          <End Role="product" Type="Self.product" Multiplicity="0..1" />
+          <End Role="auction" Type="Self.auction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="product">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="auction">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__auction__reason___571DF1D5">
+          <End Role="bid_status_reason" Type="Self.bid_status_reason" Multiplicity="0..1" />
+          <End Role="auction" Type="Self.auction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bid_status_reason">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="auction">
+              <PropertyRef Name="reason_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__order__auction_i__5BE2A6F2">
+          <End Role="auction" Type="Self.auction" Multiplicity="0..1" />
+          <End Role="order" Type="Self.order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="auction">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="order">
+              <PropertyRef Name="auction_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__customer___custo__4222D4EF">
+          <End Role="customer" Type="Self.customer" Multiplicity="0..1" />
+          <End Role="customer_address" Type="Self.customer_address" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="customer_address">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__customer___custo__47DBAE45">
+          <End Role="customer" Type="Self.customer" Multiplicity="0..1" />
+          <End Role="customer_payment" Type="Self.customer_payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="customer_payment">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__customer__status__3E52440B">
+          <End Role="customer_status" Type="Self.customer_status" Multiplicity="0..1" />
+          <End Role="customer" Type="Self.customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer_status">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="customer">
+              <PropertyRef Name="status_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__customer__status__3F466844">
+          <End Role="status_reason" Type="Self.status_reason" Multiplicity="0..1" />
+          <End Role="customer" Type="Self.customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="status_reason">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="customer">
+              <PropertyRef Name="status_reason_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__order__customer___5CD6CB2B">
+          <End Role="customer" Type="Self.customer" Multiplicity="0..1" />
+          <End Role="order" Type="Self.order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="order">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__product__custome__5070F446">
+          <End Role="customer" Type="Self.customer" Multiplicity="0..1" />
+          <End Role="product" Type="Self.product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="product">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__customer___addre__48CFD27E">
+          <End Role="customer_address" Type="Self.customer_address" Multiplicity="0..1" />
+          <End Role="customer_payment" Type="Self.customer_payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer_address">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="customer_payment">
+              <PropertyRef Name="address_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__customer___payme__46E78A0C">
+          <End Role="payment_method" Type="Self.payment_method" Multiplicity="0..1" />
+          <End Role="customer_payment" Type="Self.customer_payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="payment_method">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="customer_payment">
+              <PropertyRef Name="payment_method_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__customer___statu__49C3F6B7">
+          <End Role="customer_status" Type="Self.customer_status" Multiplicity="0..1" />
+          <End Role="customer_payment" Type="Self.customer_payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer_status">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="customer_payment">
+              <PropertyRef Name="status_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__customer___statu__4AB81AF0">
+          <End Role="status_reason" Type="Self.status_reason" Multiplicity="0..1" />
+          <End Role="customer_payment" Type="Self.customer_payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="status_reason">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="customer_payment">
+              <PropertyRef Name="status_reason_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__order__customer___5AEE82B9">
+          <End Role="customer_payment" Type="Self.customer_payment" Multiplicity="0..1" />
+          <End Role="order" Type="Self.order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer_payment">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="order">
+              <PropertyRef Name="customer_payment_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__order__status_id__5DCAEF64">
+          <End Role="customer_status" Type="Self.customer_status" Multiplicity="0..1" />
+          <End Role="order" Type="Self.order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer_status">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="order">
+              <PropertyRef Name="status_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__product__status___5165187F">
+          <End Role="customer_status" Type="Self.customer_status" Multiplicity="0..1" />
+          <End Role="product" Type="Self.product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer_status">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="product">
+              <PropertyRef Name="status_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__order__status_re__5EBF139D">
+          <End Role="status_reason" Type="Self.status_reason" Multiplicity="0..1" />
+          <End Role="order" Type="Self.order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="status_reason">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="order">
+              <PropertyRef Name="status_reason_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__product__product__4F7CD00D">
+          <End Role="product_type" Type="Self.product_type" Multiplicity="0..1" />
+          <End Role="product" Type="Self.product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="product_type">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="product">
+              <PropertyRef Name="product_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__product__status___52593CB8">
+          <End Role="status_reason" Type="Self.status_reason" Multiplicity="0..1" />
+          <End Role="product" Type="Self.product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="status_reason">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="product">
+              <PropertyRef Name="status_reason_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AuctionSystemEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="auctions" EntityType="Self.auction" />
+          <EntitySet Name="bid_status" EntityType="Self.bid_status" />
+          <EntitySet Name="bid_status_reason" EntityType="Self.bid_status_reason" />
+          <EntitySet Name="customers" EntityType="Self.customer" />
+          <EntitySet Name="customer_address" EntityType="Self.customer_address" />
+          <EntitySet Name="customer_payment" EntityType="Self.customer_payment" />
+          <EntitySet Name="customer_status" EntityType="Self.customer_status" />
+          <EntitySet Name="orders" EntityType="Self.order" />
+          <EntitySet Name="payment_method" EntityType="Self.payment_method" />
+          <EntitySet Name="products" EntityType="Self.product" />
+          <EntitySet Name="product_type" EntityType="Self.product_type" />
+          <EntitySet Name="status_reason" EntityType="Self.status_reason" />
+          <AssociationSet Name="FK__auction__bidstat__5629CD9C" Association="Self.FK__auction__bidstat__5629CD9C">
+            <End Role="bid_status" EntitySet="bid_status" />
+            <End Role="auction" EntitySet="auctions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__auction__custome__5812160E" Association="Self.FK__auction__custome__5812160E">
+            <End Role="customer" EntitySet="customers" />
+            <End Role="auction" EntitySet="auctions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__auction__product__5535A963" Association="Self.FK__auction__product__5535A963">
+            <End Role="product" EntitySet="products" />
+            <End Role="auction" EntitySet="auctions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__auction__reason___571DF1D5" Association="Self.FK__auction__reason___571DF1D5">
+            <End Role="bid_status_reason" EntitySet="bid_status_reason" />
+            <End Role="auction" EntitySet="auctions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__order__auction_i__5BE2A6F2" Association="Self.FK__order__auction_i__5BE2A6F2">
+            <End Role="auction" EntitySet="auctions" />
+            <End Role="order" EntitySet="orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__customer___custo__4222D4EF" Association="Self.FK__customer___custo__4222D4EF">
+            <End Role="customer" EntitySet="customers" />
+            <End Role="customer_address" EntitySet="customer_address" />
+          </AssociationSet>
+          <AssociationSet Name="FK__customer___custo__47DBAE45" Association="Self.FK__customer___custo__47DBAE45">
+            <End Role="customer" EntitySet="customers" />
+            <End Role="customer_payment" EntitySet="customer_payment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__customer__status__3E52440B" Association="Self.FK__customer__status__3E52440B">
+            <End Role="customer_status" EntitySet="customer_status" />
+            <End Role="customer" EntitySet="customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__customer__status__3F466844" Association="Self.FK__customer__status__3F466844">
+            <End Role="status_reason" EntitySet="status_reason" />
+            <End Role="customer" EntitySet="customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__order__customer___5CD6CB2B" Association="Self.FK__order__customer___5CD6CB2B">
+            <End Role="customer" EntitySet="customers" />
+            <End Role="order" EntitySet="orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__product__custome__5070F446" Association="Self.FK__product__custome__5070F446">
+            <End Role="customer" EntitySet="customers" />
+            <End Role="product" EntitySet="products" />
+          </AssociationSet>
+          <AssociationSet Name="FK__customer___addre__48CFD27E" Association="Self.FK__customer___addre__48CFD27E">
+            <End Role="customer_address" EntitySet="customer_address" />
+            <End Role="customer_payment" EntitySet="customer_payment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__customer___payme__46E78A0C" Association="Self.FK__customer___payme__46E78A0C">
+            <End Role="payment_method" EntitySet="payment_method" />
+            <End Role="customer_payment" EntitySet="customer_payment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__customer___statu__49C3F6B7" Association="Self.FK__customer___statu__49C3F6B7">
+            <End Role="customer_status" EntitySet="customer_status" />
+            <End Role="customer_payment" EntitySet="customer_payment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__customer___statu__4AB81AF0" Association="Self.FK__customer___statu__4AB81AF0">
+            <End Role="status_reason" EntitySet="status_reason" />
+            <End Role="customer_payment" EntitySet="customer_payment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__order__customer___5AEE82B9" Association="Self.FK__order__customer___5AEE82B9">
+            <End Role="customer_payment" EntitySet="customer_payment" />
+            <End Role="order" EntitySet="orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__order__status_id__5DCAEF64" Association="Self.FK__order__status_id__5DCAEF64">
+            <End Role="customer_status" EntitySet="customer_status" />
+            <End Role="order" EntitySet="orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__product__status___5165187F" Association="Self.FK__product__status___5165187F">
+            <End Role="customer_status" EntitySet="customer_status" />
+            <End Role="product" EntitySet="products" />
+          </AssociationSet>
+          <AssociationSet Name="FK__order__status_re__5EBF139D" Association="Self.FK__order__status_re__5EBF139D">
+            <End Role="status_reason" EntitySet="status_reason" />
+            <End Role="order" EntitySet="orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__product__product__4F7CD00D" Association="Self.FK__product__product__4F7CD00D">
+            <End Role="product_type" EntitySet="product_type" />
+            <End Role="product" EntitySet="products" />
+          </AssociationSet>
+          <AssociationSet Name="FK__product__status___52593CB8" Association="Self.FK__product__status___52593CB8">
+            <End Role="status_reason" EntitySet="status_reason" />
+            <End Role="product" EntitySet="products" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="auction_systemModelStoreContainer" CdmEntityContainer="AuctionSystemEntities">
+          <EntitySetMapping Name="auctions">
+            <EntityTypeMapping TypeName="auction_systemModel.auction">
+              <MappingFragment StoreEntitySet="auction">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="product_id" ColumnName="product_id" />
+                <ScalarProperty Name="bid_price" ColumnName="bid_price" />
+                <ScalarProperty Name="auction_datetime" ColumnName="auction_datetime" />
+                <ScalarProperty Name="bidstatus_id" ColumnName="bidstatus_id" />
+                <ScalarProperty Name="reason_id" ColumnName="reason_id" />
+                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bid_status">
+            <EntityTypeMapping TypeName="auction_systemModel.bid_status">
+              <MappingFragment StoreEntitySet="bid_status">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="status" ColumnName="status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bid_status_reason">
+            <EntityTypeMapping TypeName="auction_systemModel.bid_status_reason">
+              <MappingFragment StoreEntitySet="bid_status_reason">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="status_reason" ColumnName="status_reason" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="customers">
+            <EntityTypeMapping TypeName="auction_systemModel.customer">
+              <MappingFragment StoreEntitySet="customer">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="customer_lastname" ColumnName="customer_lastname" />
+                <ScalarProperty Name="customer_firstname" ColumnName="customer_firstname" />
+                <ScalarProperty Name="customer_phone" ColumnName="customer_phone" />
+                <ScalarProperty Name="customer_email" ColumnName="customer_email" />
+                <ScalarProperty Name="customer_password" ColumnName="customer_password" />
+                <ScalarProperty Name="status_id" ColumnName="status_id" />
+                <ScalarProperty Name="status_reason_id" ColumnName="status_reason_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="customer_address">
+            <EntityTypeMapping TypeName="auction_systemModel.customer_address">
+              <MappingFragment StoreEntitySet="customer_address">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+                <ScalarProperty Name="Address1" ColumnName="Address1" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address_State" ColumnName="Address_State" />
+                <ScalarProperty Name="Zipcode" ColumnName="Zipcode" />
+                <ScalarProperty Name="country" ColumnName="country" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="customer_payment">
+            <EntityTypeMapping TypeName="auction_systemModel.customer_payment">
+              <MappingFragment StoreEntitySet="customer_payment">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="payment_method_id" ColumnName="payment_method_id" />
+                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+                <ScalarProperty Name="address_id" ColumnName="address_id" />
+                <ScalarProperty Name="status_id" ColumnName="status_id" />
+                <ScalarProperty Name="status_reason_id" ColumnName="status_reason_id" />
+                <ScalarProperty Name="card_number" ColumnName="card_number" />
+                <ScalarProperty Name="card_pin" ColumnName="card_pin" />
+                <ScalarProperty Name="card_expirydate" ColumnName="card_expirydate" />
+                <ScalarProperty Name="card_holdername" ColumnName="card_holdername" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="customer_status">
+            <EntityTypeMapping TypeName="auction_systemModel.customer_status">
+              <MappingFragment StoreEntitySet="customer_status">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="status" ColumnName="status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="orders">
+            <EntityTypeMapping TypeName="auction_systemModel.order">
+              <MappingFragment StoreEntitySet="order">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="order_amount" ColumnName="order_amount" />
+                <ScalarProperty Name="order_datetime" ColumnName="order_datetime" />
+                <ScalarProperty Name="customer_payment_id" ColumnName="customer_payment_id" />
+                <ScalarProperty Name="auction_id" ColumnName="auction_id" />
+                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+                <ScalarProperty Name="status_id" ColumnName="status_id" />
+                <ScalarProperty Name="status_reason_id" ColumnName="status_reason_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="payment_method">
+            <EntityTypeMapping TypeName="auction_systemModel.payment_method">
+              <MappingFragment StoreEntitySet="payment_method">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="payment_method1" ColumnName="payment_method" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="products">
+            <EntityTypeMapping TypeName="auction_systemModel.product">
+              <MappingFragment StoreEntitySet="product">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="product_type_id" ColumnName="product_type_id" />
+                <ScalarProperty Name="product_Name" ColumnName="product_Name" />
+                <ScalarProperty Name="product_bid_price" ColumnName="product_bid_price" />
+                <ScalarProperty Name="product_bid_time" ColumnName="product_bid_time" />
+                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+                <ScalarProperty Name="status_id" ColumnName="status_id" />
+                <ScalarProperty Name="status_reason_id" ColumnName="status_reason_id" />
+                <ScalarProperty Name="product_description" ColumnName="product_description" />
+                <ScalarProperty Name="max_price" ColumnName="max_price" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="product_type">
+            <EntityTypeMapping TypeName="auction_systemModel.product_type">
+              <MappingFragment StoreEntitySet="product_type">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="type" ColumnName="type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="status_reason">
+            <EntityTypeMapping TypeName="auction_systemModel.status_reason">
+              <MappingFragment StoreEntitySet="status_reason">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="reason" ColumnName="reason" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

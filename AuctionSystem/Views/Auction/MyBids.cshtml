@@ -1,9 +1,9 @@
 ﻿@model Auction.Model.Message.AuctionResponse
-    @{
-        ViewBag.Title = "AuctionsView";
-    }
+@{
+    ViewBag.Title = "AuctionsView";
+}
 
-    <body style="background-color:white; ">
+<body style="background-color:white; ">
 
 
     <div style="
@@ -16,22 +16,21 @@
         margin: auto;">
 
         @if (Model.Auctions.Count != 0)
+        {
+            for (int i = 0; i < Model.Auctions.Count; i++)
             {
-                for (int i = 0; i < Model.Auctions.Count; i++)
-                {
-                    var name = Model.Auctions[i].Product_Name;
+                var name = Model.Auctions[i].ProductName;
                 <table>
-
                     <tr style="color:black">
                         <td style="font-size: large">
-                            @Html.ActionLink(name, "MyBidDetail", "Auction", new { auctionid = Model.Auctions[i].Auction_Id }, null)
+                            @Html.ActionLink(name, "MyBidDetail", "Auction", new { auctionid = Model.Auctions[i].AuctionId }, null)
                             <br />  @Html.Label("End Date:")
-                            @Html.DisplayFor(model => model.Auctions[i].Product_bid_time, new { @class = "" })
+                            @Html.DisplayFor(model => model.Auctions[i].ProductBidTime)
 
                         </td>
-
                     </tr>
                 </table>
+                <hr />
             }
         }
 
@@ -48,5 +47,5 @@
 
     </div>
 </body>
-    
+
 

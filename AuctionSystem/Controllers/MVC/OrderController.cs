@@ -6,7 +6,6 @@ using System.Web.Mvc;
 using Auction.Database;
 using System.Net.Http;
 using Auction.Model.Message;
-using AuctionModel;
 using System.Configuration;
 
 namespace AuctionSystemWebApi.Controllers.MVC
@@ -26,7 +25,7 @@ namespace AuctionSystemWebApi.Controllers.MVC
                 {
                     client.BaseAddress = new Uri("http://localhost:54713/api/");
                     //HTTP GET
-                    var url = "Orders/GetUserOrders?customerid=" + customerid;
+                    var url = "Order/GetCustomerOrders?customerid=" + customerid;
                     var responseMessageTask = client.GetAsync(url);
                     responseMessageTask.Wait();
 
@@ -65,17 +64,17 @@ namespace AuctionSystemWebApi.Controllers.MVC
                 return RedirectToActionPermanent("Index", "Login");
             }
                 ViewBag.LoginSuccess = "True";
-            Orders customerOrders = new Orders();
+            Order customerOrders = new Order();
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(ConfigurationManager.AppSettings["WebApiBaseUrl"]);
                 //HTTP GET
-                var responseMessageTask = client.GetAsync("api/Orders/GetOrder?orderid=" + orderid);
+                var responseMessageTask = client.GetAsync("api/Order/GetOrder?orderid=" + orderid);
                 responseMessageTask.Wait();
                 var responseMessage = responseMessageTask.Result;
                 if (responseMessage.IsSuccessStatusCode)
                 {
-                    var responseContentTask = responseMessage.Content.ReadAsAsync<Orders>();
+                    var responseContentTask = responseMessage.Content.ReadAsAsync<Order>();
                     responseContentTask.Wait();
                     customerOrders = responseContentTask.Result;
                     return View("DisplayCustomerOrder", customerOrders); 

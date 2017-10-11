@@ -8,245 +8,231 @@ using Auction.Database;
 using Auction.Model.Data;
 using Auction.Model;
 
-namespace Auction.BuisinessLogic
+namespace Auction.BusinessLogic
 {
     public static class CustomerAuction
     {
         private static AuctionSystemEntities auctionEntities;
-        public static AuctionResponse auctionResponse;
-        public static UserAuction userAuction;
+        public static string format = "MMM d yyyy";
 
-        //To post user bids
-        public static AuctionResponse UserBid(AuctionRequest auction)
+        #region Get Customer Bids
+        //To get user bids with customer id
+        public static AuctionResponse GetCustomerBids(int customerId)
         {
-            //create new auctionresponse object
-            auctionResponse = new AuctionResponse();
             auctionEntities = new AuctionSystemEntities();
-            //To retrieve user products from product table with productid and customerid
-            var userproduct = auctionEntities.products.Where(c => c.id == auction.ProductID && c.customer_id == auction.Customer_Id).FirstOrDefault();
-            //To check if user is bidding for own product
+            AuctionResponse auctionResponse = new AuctionResponse();
+            var auctions = auctionEntities.auctions.Where(c => c.customer_id == customerId).OrderByDescending(d => d.auction_datetime).ToList();
+
+            if (auctions == null)
+            {
+                auctionResponse.Error = new Error { Code = ErrorCodes.NoAuctions, Message = "This customer does not contain any auctions" };
+                return auctionResponse;
+            }
+
+            //if auction is not null retrieve current highest bid price from Auction table with productid and max bid price 
+            auctionResponse.Auctions = new List<Model.Message.Auction>();
+
+            foreach (auction auction in auctions)
+            {
+                var userAuction = new Model.Message.Auction();
+                var highestbidprce = auctionEntities.auctions.Where(c => c.product_id == auction.product_id).Max(p => p.bid_price);
+
+                userAuction.AuctionId = auction.id;
+                userAuction.CustomerId = auction.customer_id;
+                userAuction.ProductId = auction.product_id;
+                userAuction.BidPrice = auction.bid_price;
+                userAuction.ProductBidTime = auction.product.product_bid_time.ToString(format);
+                userAuction.ProductName = auction.product.product_Name;
+                userAuction.ProductDescription = auction.product.product_description;
+                userAuction.CurrentHighestBidPrice = highestbidprce;
+                userAuction.BidStatus = auction.bid_status.status;
+                userAuction.BidStatusReason = auction.bid_status_reason.status_reason;
+                auctionResponse.Auctions.Add(userAuction);
+            }
+            return auctionResponse;
+        }
+        #endregion Get Customer Bids
+
+        #region Get Bid
+        //To get customerselected  bid
+        public static Model.Message.Auction GetBid(int auctionid)
+        {
+            auctionEntities = new AuctionSystemEntities();
+            Model.Message.Auction auction = new Model.Message.Auction();
+
+            //retrieve auction from Auctions table with auctionid
+            var dbAuction = auctionEntities.auctions.Where(c => c.id == auctionid).FirstOrDefault();
+            //if auction is null set fault as no auctions
+            if (dbAuction != null)
+            {
+                var highestBid = auctionEntities.auctions.Where(c => c.product_id == dbAuction.product_id).Max(p => p.bid_price);
+                auction.AuctionId = dbAuction.id;
+                auction.ProductId = dbAuction.product_id;
+                auction.BidPrice = dbAuction.bid_price;
+                auction.ProductBidTime = dbAuction.product.product_bid_time.ToString(format);
+                auction.ProductName = dbAuction.product.product_Name;
+                auction.ProductDescription = dbAuction.product.product_description;
+                auction.BidStatus = ((dbAuction.auction_datetime < DateTime.Now) && dbAuction.bidstatus_id == (int)BidStatusCode.Active) ? "Inactive" : dbAuction.bid_status.status;
+                auction.BidStatusReason = dbAuction.bid_status_reason.status_reason;
+                auction.CurrentHighestBidPrice = highestBid;
+            }
+            return auction;
+        }
+        #endregion Get Bid
+
+        #region Create Bid
+        //To post user bids
+        public static AuctionResponse CreateBid(AuctionRequest auctionRequest)
+        {
+            AuctionResponse auctionResponse = new AuctionResponse();
+            auctionEntities = new AuctionSystemEntities();
+            Model.Message.Auction auction = new Model.Message.Auction();
+
+            //Retrieve user products to check if user is bidding on own product
+            var userproduct = auctionEntities.products.Where(c => c.id == auctionRequest.ProductId && c.customer_id == auctionRequest.CustomerId).FirstOrDefault();
             if (userproduct != null)
             {
                 auctionResponse.Error = new Error { Code = ErrorCodes.BidNotAllowed, Message = "Bidding on your product is not allowed" };
                 return auctionResponse;
             }
 
-            //retrieve auctions from autions table with productid
-            var userAuction = auctionEntities.auctions.Where(c => c.product_id == auction.ProductID).FirstOrDefault();
-            //check if auction is null
-            if (userAuction == null)
+            //retrieve auctions from autions table with productid to see if this is the first bid on product
+            var dbAuctions = auctionEntities.auctions.Where(c => c.product_id == auctionRequest.ProductId).ToList();
+            if (dbAuctions == null || dbAuctions.Count == 0)
             {
-                //if there are no auctions for this productid then retrieve product from product table
-                var product = auctionEntities.products.Where(c => c.id == auction.ProductID).FirstOrDefault();
-                //if productt is null set fault as product unavailable
-                if (product == null)
+                //Retrieve product from product table to compare the bidding price
+                var dbProduct = auctionEntities.products.Where(c => c.id == auctionRequest.ProductId).FirstOrDefault();
+                if (dbProduct == null)
                 {
-
                     auctionResponse.Error = new Error { Code = ErrorCodes.ProductUnavailable, Message = "Product is not available" };
                     return auctionResponse;
-
                 }
-                //if product is not null compare user entered bid price with product bid price
-                if (product.product_bid_price > auction.Bid_price)
+                if (dbProduct.product_bid_price > auctionRequest.BidPrice)
                 {
-                    //if user bid price is less than product bid price then set fault as invalid bid price
                     auctionResponse.Error = new Error { Code = ErrorCodes.InvalidBidPrice, Message = "Bid price cannot be less than minimum bid price" };
                     return auctionResponse;
-
                 }
 
-                //create Auction object and set values to properties
-                Database.auction Auction = new Database.auction()
+                auction dbAuction = new auction()
                 {
-
-                    customer_id = auction.Customer_Id,
-                    product_id = auction.ProductID,
-                    bid_price = auction.Bid_price,
-                    auction_datetime = auction.Product_bid_time,
+                    customer_id = auctionRequest.CustomerId,
+                    product_id = auctionRequest.ProductId,
+                    bid_price = auctionRequest.BidPrice,
+                    auction_datetime = auctionRequest.ProductBidTime,
                     bidstatus_id = (int)BidStatusCode.Active,
                     reason_id = (int)BidReasonCode.AuctionIsOpen
                 };
-                //add Auction object to Auctions table in database and save the database
-                auctionEntities.auctions.Add(Auction);
+                auctionEntities.auctions.Add(dbAuction);
                 auctionEntities.SaveChanges();
-                //create new userauction object
-                CustomerAuction.userAuction = new UserAuction();
-                //create new auctionresponse object
-                auctionResponse = new AuctionResponse();
-                //set values to userauction object properties
-                CustomerAuction.userAuction.Auction_Id = Auction.id;
-                CustomerAuction.userAuction.Product_Id = Auction.product_id;
-                //create new list of userauction
-                auctionResponse.Auctions = new List<UserAuction>();
+
+
+                auction = new Model.Message.Auction()
+                {
+                    AuctionId = dbAuction.id,
+                    ProductId = dbAuction.product_id
+                };
+
+                auctionResponse.Auctions = new List<Model.Message.Auction>();
                 //add userauction object to list
-                auctionResponse.Auctions.Add(CustomerAuction.userAuction);
+                auctionResponse.Auctions.Add(auction);
                 return auctionResponse;
-
-
             }
-            var currentHighestBid = auctionEntities.auctions.Where(c => c.product_id == auction.ProductID).Max(p => p.bid_price);
-            //To check if user has product in auction table already
-            var response = auctionEntities.auctions.Where(c => c.product_id == auction.ProductID && c.customer_id == auction.Customer_Id).FirstOrDefault();
 
-            if (response != null)
+            var currentHighestBid = dbAuctions.Max(p => p.bid_price);
+
+            //check if user has product in auction table already
+            var dbExistingAuction = auctionEntities.auctions.Where(c => c.product_id == auctionRequest.ProductId && c.customer_id == auctionRequest.CustomerId).FirstOrDefault();
+            if (dbExistingAuction != null)
             {
-                if (auction.Bid_price < currentHighestBid)
+                if (auctionRequest.BidPrice < currentHighestBid)
                 {
                     auctionResponse.Error = new Error { Code = ErrorCodes.InvalidBidPrice, Message = "Bid price cannot be less than current highest bid price" };
                     return auctionResponse;
                 }
-                CustomerAuction.userAuction = new UserAuction();
-                response.bid_price = auction.Bid_price;
+                auction = new Model.Message.Auction();
+                dbExistingAuction.bid_price = auctionRequest.BidPrice;
                 auctionEntities.SaveChanges();
-                CustomerAuction.userAuction.Auction_Id = response.id;
-                CustomerAuction.userAuction.Product_Id = response.product_id;
-                auctionResponse.Auctions = new List<UserAuction>();
-                auctionResponse.Auctions.Add(CustomerAuction.userAuction);
+
+                auction.AuctionId = dbExistingAuction.id;
+                auction.ProductId = dbExistingAuction.product_id;
+                auctionResponse.Auctions = new List<Model.Message.Auction>();
+                auctionResponse.Auctions.Add(auction);
                 return auctionResponse;
             }
 
             //compare currenthighestbid with userbid 
-            if (currentHighestBid >= auction.Bid_price)
+            if (currentHighestBid >= auctionRequest.BidPrice)
             {
                 //if user bid is less then set fault as invalid price
                 auctionResponse.Error = new Error { Code = ErrorCodes.InvalidBidPrice, Message = "Bid price cannot be less than current highest bid" };
                 return auctionResponse;
             }
-            //if user bid is higher than currenthighestbid then create new auction object and set values to properties
-            Database.auction Auctions = new Database.auction()
+
+            //if user bid is higher than currenthighestbid 
+            auction Auctions = new auction()
             {
-                customer_id = auction.Customer_Id,
-                product_id = auction.ProductID,
-                bid_price = auction.Bid_price,
-                auction_datetime = auction.Product_bid_time,
+                customer_id = auctionRequest.CustomerId,
+                product_id = auctionRequest.ProductId,
+                bid_price = auctionRequest.BidPrice,
+                auction_datetime = auctionRequest.ProductBidTime,
                 bidstatus_id = (int)BidStatusCode.Active,
                 reason_id = (int)BidReasonCode.AuctionIsOpen
             };
-            // add auction object to Auctions table in databse and save
+
             auctionEntities.auctions.Add(Auctions);
             auctionEntities.SaveChanges();
-            //create new userauction object
-            CustomerAuction.userAuction = new UserAuction();
-            //create new auctionresponse object and set values to properties 
-            auctionResponse = new AuctionResponse();
-            CustomerAuction.userAuction.Auction_Id = Auctions.id;
-            CustomerAuction.userAuction.Product_Id = Auctions.product_id;
-            //create new list of usrauction
-            auctionResponse.Auctions = new List<UserAuction>();
-            //add auctions object to list
-            auctionResponse.Auctions.Add(CustomerAuction.userAuction);
-            return auctionResponse;
 
-        }
-
-        //To get customerselected  bid
-        public static UserAuction GetCustomerBid(int auctionid)
-        {
-            auctionEntities = new AuctionSystemEntities();
-            UserAuction userAuction = new UserAuction();
-            //create new AuctionResponse object
-
-            //retrieve auction from Auctions table with auctionid
-            var auction = auctionEntities.auctions.Where(c => c.id == auctionid).FirstOrDefault();
-            //if auction is null set fault as no auctions
-            if (auction != null)
+            auction = new Model.Message.Auction()
             {
-                var HighestBid = auctionEntities.auctions.Where(c => c.product_id == auction.product_id).Max(p => p.bid_price);
-
-
-                userAuction.Auction_Id = auction.id;
-                userAuction.Product_Id = auction.product_id;
-                userAuction.Bid_price = auction.bid_price;
-                userAuction.Product_bid_time = auction.auction_datetime;
-                userAuction.Product_Name = auction.product.product_Name;
-                userAuction.Product_description = auction.product.product_description;
-                userAuction.BidStatus = auction.bid_status.status;
-                userAuction.BidStatus_Reason = auction.bid_status_reason.status_reason;
-                userAuction.CurrentHighestBidPrice = HighestBid;
-            }
-           
-            return userAuction;
-        }
-
-
-        //To get user bids with customer id
-        public static AuctionResponse GetUserBids(int customerId)
-        {
-            auctionEntities = new AuctionSystemEntities();
-            var auction = auctionEntities.auctions.Where(c => c.customer_id == customerId).ToList();
-            auctionResponse = new AuctionResponse();
-            if (auction == null)
-            {
-                auctionResponse.Error = new Error { Code = ErrorCodes.NoAuctions, Message = "This customer does not contain any auctions" };
-                return auctionResponse;
-            }
-            //if auction is not null retrieve current highest bid price from Auction table with productid and max bid price 
-            // create new UserAuction list
-            auctionResponse.Auctions = new List<UserAuction>();
-            
-            foreach (Database.auction item in auction)
-            {
-                var userAuction = new UserAuction();
-                var Highestbidprce = auctionEntities.auctions.Where(c => c.product_id == item.product_id).Max(p => p.bid_price);
-
-                userAuction.Auction_Id = item.id;
-                userAuction.Customer_Id = item.customer_id;
-                userAuction.Product_Id = item.product_id;
-                userAuction.Bid_price = item.bid_price;
-                userAuction.Product_bid_time = item.auction_datetime;
-                userAuction.Product_Name = item.product.product_Name;
-                userAuction.Product_description = item.product.product_description;
-                userAuction.CurrentHighestBidPrice = Highestbidprce;
-                userAuction.BidStatus = item.bid_status.status;
-                userAuction.BidStatus_Reason = item.bid_status_reason.status_reason;
-               
-                auctionResponse.Auctions.Add(userAuction);
-            }
-
+                AuctionId = Auctions.id,
+                ProductId = Auctions.product_id
+            };
+            auctionResponse.Auctions = new List<Model.Message.Auction>();
+            auctionResponse.Auctions.Add(auction);
             return auctionResponse;
         }
+        #endregion Create Bid
+
+        #region Update Customer Bid
         //To update customer bid
-        public static AuctionResponse UpdateCustomerBid(UserAuction auction)
+        public static AuctionResponse UpdateCustomerBid(Model.Message.Auction auctionRequest)
         {
             auctionEntities = new AuctionSystemEntities();
+            AuctionResponse auctionResponse = new AuctionResponse();
 
-            var Auction = auctionEntities.auctions.Where(c => c.customer_id == auction.Customer_Id && c.id == auction.Auction_Id).FirstOrDefault();
-            auctionResponse = new AuctionResponse();
-
-            //int statuscode = (int)StatusCode.Active;
-            if (Auction == null || Auction.bidstatus_id != (int) StatusCode.Active)
-
+            var dbAuction = auctionEntities.auctions.Where(c => c.customer_id == auctionRequest.CustomerId && c.id == auctionRequest.AuctionId).FirstOrDefault();
+            if (dbAuction == null || dbAuction.bidstatus_id != (int)StatusCode.Active || auctionRequest.BidStatus == "Inactive")
             {
                 auctionResponse.Error = new Error { Code = ErrorCodes.NoAuctions, Message = "Auction unavailable" };
-
                 return auctionResponse;
-
             }
 
-            var currentHighestBid = auctionEntities.auctions.Where(c => c.product_id == Auction.product_id).Max(p => p.bid_price);
-            if (currentHighestBid >= auction.Bid_price)
+            var currentHighestBid = auctionEntities.auctions.Where(c => c.product_id == dbAuction.product_id).Max(p => p.bid_price);
+            if (currentHighestBid >= auctionRequest.BidPrice)
             {
-                auctionResponse.Error = new Error { Code = ErrorCodes.InvalidBidPrice, Message = "Bid price cannot be less than current highest bid" };
+                auctionResponse.Error = new Error { Code = ErrorCodes.InvalidBidPrice, Message = "Bid price should be more than current highest bid" };
                 return auctionResponse;
             }
 
-            Auction.bid_price = auction.Bid_price;
+            dbAuction.bid_price = auctionRequest.BidPrice;
             auctionEntities.SaveChanges();
-           
-            auctionResponse.Auctions = new List<UserAuction>();
-            var auctions = new UserAuction();
-            auctions.Auction_Id = Auction.id;
-            auctions.BidStatus = Auction.bid_status.status;
-            auctions.BidStatus_Reason = Auction.bid_status_reason.status_reason;
-            auctions.Bid_price = auction.Bid_price;
-            auctions.CurrentHighestBidPrice = currentHighestBid;
-            auctions.Customer_Id = auction.Customer_Id;
-            auctions.Product_description = Auction.product.product_description;
-            auctions.Product_Name = Auction.product.product_Name;
-            auctions.Product_Id = Auction.product_id;
-            auctionResponse.Auctions.Add(auctions);
-            return auctionResponse;
 
+            auctionResponse.Auctions = new List<Model.Message.Auction>();
+            Model.Message.Auction auction = new Model.Message.Auction()
+            {
+                AuctionId = dbAuction.id,
+                BidStatus = dbAuction.bid_status.status,
+                BidStatusReason = dbAuction.bid_status_reason.status_reason,
+                BidPrice = dbAuction.bid_price,
+                CurrentHighestBidPrice = currentHighestBid,
+                CustomerId = dbAuction.customer_id,
+                ProductDescription = dbAuction.product.product_description,
+                ProductName = dbAuction.product.product_Name,
+                ProductId = dbAuction.product_id
+            };
+            auctionResponse.Auctions.Add(auction);
+            return auctionResponse;
         }
+        #endregion Update Customer Bid
     }
 }

@@ -1,4 +1,4 @@
-﻿@model AuctionModel.LoginModelRequest
+﻿@model Auction.Model.Message.LoginModelRequest
 @{
     ViewBag.Title = "Index";
 }
@@ -26,18 +26,18 @@
         {
             <div>
                 <label style="color: black; font-size: large"> Email: </label>
-                @Html.TextBoxFor(m => m.Email,  new { @class = "form-control" }) <br />
+                @Html.TextBoxFor(m => m.Email,  new { @class = "form-control", @id = "loginEmail" }) <br />
                 @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
             </div>
 
             <div>
                 <label style="color: black; font-size: large"> Password: </label>
-                @Html.PasswordFor(m => m.Password, new { @class = "form-control" }) <br />
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control", @id = "loginPassword" }) <br />
                 @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
             </div>
 
 
-            <input type="submit" value="Login" style="color:white; background-color:cornflowerblue; font-size: large" />
+            <input id="login" type="submit" value="Login" style="color:white; background-color:cornflowerblue; font-size: large" />
 
         }
 

@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Auction.Model.Message;
-using Auction.BuisinessLogic;
+using Auction.BusinessLogic;
 using Auction.Model.Data;
 using Auction.Model;
 
@@ -17,32 +17,32 @@ namespace AuctionSystemWebApi.Controllers
         [Route("api/Auction/GetBidsByCustomerId")]
         public IHttpActionResult GetBidsByCustomerId(int customerId)
         {
-            var response = CustomerAuction.GetUserBids(customerId);
+            var response = CustomerAuction.GetCustomerBids(customerId);
             return Ok(response);
         }
 
         //To get user selected bid
         [Route("api/Auction/GetBid")]
-        public IHttpActionResult GetBid( int auctionid)
+        public IHttpActionResult GetBid(int auctionid)
         {
-            var response = CustomerAuction.GetCustomerBid(auctionid);
+            var response = CustomerAuction.GetBid(auctionid);
             return Ok(response);
         }
 
         //To post customer bid
-        [Route("api/Auction/CustomerBid")]
-        public IHttpActionResult CustomerBid(AuctionRequest auction)
+        [Route("api/Auction/CreateBid")]
+        public IHttpActionResult CreateBid(AuctionRequest auction)
         {
             try
             {
+                AuctionResponse auctionResponse = new AuctionResponse();
                 if (!ModelState.IsValid)
                 {
-                    AuctionResponse Response = new AuctionResponse();
-                    Response.Error = new Error() { Code = ErrorCodes.ModelStateInvalid , Message = "model state is not valid" };
-                    return Ok(Response);
+                    auctionResponse.Error = new Error() { Code = ErrorCodes.ModelStateInvalid, Message = "model state is not valid" };
+                    return Ok(auctionResponse);
                 }
-                var response = CustomerAuction.UserBid(auction);
-                return Ok(response);
+                auctionResponse = CustomerAuction.CreateBid(auction);
+                return Ok(auctionResponse);
             }
             catch (Exception ex)
             {
@@ -52,18 +52,18 @@ namespace AuctionSystemWebApi.Controllers
 
         //To update customer bid
         [Route("api/Auction/UpdateBid")]
-        public IHttpActionResult UpdateBid(UserAuction auction)
+        public IHttpActionResult UpdateBid(Auction.Model.Message.Auction auction)
         {
             try
             {
+                AuctionResponse auctionResponse = new AuctionResponse();
                 if (!ModelState.IsValid)
                 {
-                    AuctionResponse Response = new AuctionResponse();
-                    Response.Error = new Error() { Code = ErrorCodes.ModelStateInvalid, Message = "model state is not valid" };
-                    return Ok(Response);
+                    auctionResponse.Error = new Error() { Code = ErrorCodes.ModelStateInvalid, Message = "model state is not valid" };
+                    return Ok(auctionResponse);
                 }
-                var response = CustomerAuction.UpdateCustomerBid(auction);
-                return Ok(response);
+                auctionResponse = CustomerAuction.UpdateCustomerBid(auction);
+                return Ok(auctionResponse);
             }
             catch (Exception ex)
             {

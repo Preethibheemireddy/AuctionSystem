@@ -21,20 +21,21 @@
 
             for (int i = 0; i < Model.CustomerOrders.Count; i++)
             {
-                var Name = Model.CustomerOrders[i].Product_name;
+                var Name = Model.CustomerOrders[i].ProductName;
                 <table>
 
                     <tr style="color:black">
                         <td style="font-size: large">
-                            @Html.ActionLink(Name, "DisplayCustomerOrder", "Order", new {  orderid = Model.CustomerOrders[i].Order_ID }, null)
+                            @Html.ActionLink(Name, "DisplayCustomerOrder", "Order", new { orderid = Model.CustomerOrders[i].OrderId }, null)
 
                             <br />  @Html.Label("Order Amount:")
-                            @Html.DisplayFor(model => model.CustomerOrders[i].Order_amount, new { @class = "" })
+                            @Html.DisplayFor(model => model.CustomerOrders[i].OrderAmount)
 
                         </td>
 
                     </tr>
                 </table>
+                <hr />
             }
         }
 
@@ -54,13 +55,5 @@
                 </tr>
             </table>
         }
-
-
-
-
-
-
-
-
     </div>
 </body>

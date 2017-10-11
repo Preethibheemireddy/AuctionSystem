@@ -3,12 +3,8 @@
 @{
     ViewBag.Title = "Index";
 }
-
-
-
 <body style="background-color: white">
-
-    @*<img src="C:\Users\jagad\OneDrive\Documents\Visual Studio 2017\Projects\AuctionSystemWebApi\AuctionSystemWebApi\Scripts\Auction-gavel-1.jpg" style='width:100%; height: 100%; background-position: center; background-attachment: fixed; background-size: cover; background-repeat: no-repeat' alt='[]' />*@
+   
     <div style="
         display:inherit;
         position: absolute;
@@ -23,13 +19,13 @@
 
             <table>
                
-                @if (Model.Products.Count != 0)
+                @if (Model.ProductTypes.Count != 0)
                 {
-                    for (int i = 0; i < Model.Products.Count; i++)
+                    for (int i = 0; i < Model.ProductTypes.Count; i++)
                     {
-                        var Name = Model.Products[i].Product_type;
+                        var Name = Model.ProductTypes[i].ProductType;
                         <tr style="color:black">
-                            <td style="font-size:large"> @Html.ActionLink(Name, "GetProducts", "Product", new { productTypeId = Model.Products[i].ProductType_Id }, null) </td>
+                            <td style="font-size:large"> @Html.ActionLink(Name, "GetProducts", "Product", new { productTypeId = Model.ProductTypes[i].ProductTypeId }, null) </td>
 
                         </tr>
                     }

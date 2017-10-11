@@ -1,12 +1,12 @@
-﻿@model Auction.Model.Message.Orders
+﻿@model Auction.Model.Message.Order
 
-@{
-    ViewBag.Title = "Customer Order";
-}
+    @{
+        ViewBag.Title = "Customer Order";
+    }
 
-<body style="background-color:white; ">
+    <body style="background-color:white; ">
 
-    <div style="
+        <div style="
         display:inline;
         position: absolute;
         top: 100px;
@@ -15,54 +15,43 @@
         height: auto;
         margin: auto;">
 
-        <h2 style="font-size: x-large; font: bold; color: forestgreen"> Orders </h2> <br />
+            <h2 style="font-size: x-large; font: bold; color: forestgreen"> Orders </h2> <br />
 
-        @if (Model != null)
-        {
-            
+            @if (Model != null)
+            {
+
                 <table>
 
                     <tr style="color:black">
                         <td style="font-size: large">
 
                             @Html.Label("Order Number :")
-                            @Html.DisplayFor(m => m.Order_ID, new { @class = "" }) <br />
+                            @Html.DisplayFor(m => m.OrderId) <br />
 
                             @Html.Label("Product:")
-                            @Html.DisplayFor(m => m.Product_name, new { @class = "" })
+                            @Html.DisplayFor(m => m.ProductName)
 
-                            <br />  
+                            <br />
                             @Html.Label("Order Amount:")
-                            @Html.DisplayFor(m => m.Order_amount, new { @class = "" }) <br />
+                            @Html.DisplayFor(m => m.OrderAmount) <br />
 
                             @Html.Label("Order Date:")
-                            @Html.DisplayFor(m => m.Order_datetime, new { @class = "" }) 
-
-                           
-
+                            @Html.DisplayFor(m => m.OrderDatetime)
                         </td>
-
                     </tr>
                 </table>
-            
-        }
 
-        else
-        {
-            <table>
-                <tr>
-                    <td style="font-size: large"> There are no Orders </td>
-                </tr>
-            </table>
-        }
+            }
 
+            else
+            {
+                <table>
+                    <tr>
+                        <td style="font-size: large"> There are no Orders </td>
+                    </tr>
+                </table>
+            }
 
-
-
-
-
-
-
-    </div>
-</body>
+        </div>
+    </body>
 

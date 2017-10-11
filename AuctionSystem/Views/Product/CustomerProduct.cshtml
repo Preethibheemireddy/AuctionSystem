@@ -1,10 +1,9 @@
-﻿@model Auction.Model.Message.ProductModel
+﻿@model Auction.Model.Message.Product
 @{
     ViewBag.Title = "CustomerProduct";
 }
 
 <body style="background-color:white; ">
-
 
     <div style="
         display:inline;
@@ -15,42 +14,40 @@
         height: auto;
         margin: auto;">
 
-        @Html.ValidationSummary(true, "Please correct the errors and try again.", new { @class = "text-danger" })
+        @Html.ValidationSummary(true, "Errors occured", new { @class = "text-danger" })
 
         @using (Html.BeginForm("UpdateCustomerProduct", "Product", FormMethod.Post))
         {
-
-
             <div style="font-size: large">
                 <label style="color: black; font-size: large"> Product Name: </label>
-                @Html.TextBoxFor(m => m.Product_Name, new { @class = "form-control" }) <br />
-                @Html.ValidationMessageFor(m => m.Product_Name, "", new { @class = "text-danger" })
+                @Html.TextBoxFor(m => m.ProductName, new { @class = "form-control", @id = "productName", autocomplete = "off" }) <br />
+                @Html.ValidationMessageFor(m => m.ProductName, "", new { @class = "text-danger" })
             </div>
 
             <div style="font-size: large">
                 <label style="color: black; font-size: large"> Product Description: </label>
-                @Html.TextBoxFor(m => m.Product_description, new { @class = "form-control" }) <br />
-                @Html.ValidationMessageFor(m => m.Product_description, "", new { @class = "text-danger" })
+                @Html.TextBoxFor(m => m.ProductDescription, new { @class = "form-control", @id = "description", autocomplete = "off" }) <br />
+                @Html.ValidationMessageFor(m => m.ProductDescription, "", new { @class = "text-danger" })
             </div>
             <div style="font-size: large">
                 <label style="color: black; font-size: large"> Product Bid Time: </label>
-                @Html.TextBoxFor(m => m.Product_bid_time, new { @class = "form-control" }) <br />
-                @Html.ValidationMessageFor(m => m.Product_bid_time, "", new { @class = "text-danger" })
+                @Html.TextBoxFor(m => m.ProductBidTime, new { @class = "form-control", @id = "bidTime", autocomplete = "off" }) <br />
+                @Html.ValidationMessageFor(m => m.ProductBidTime, "", new { @class = "text-danger" })
             </div>
 
             <div style="font-size: large">
                 <label style="color: black; font-size: large"> Product Bid Price: </label>
-                @Html.DisplayFor(m => m.Product_bid_price, new { @class = "form-control" }) <br />
-                @Html.HiddenFor(m => m.Product_bid_price)
+                @Html.DisplayFor(m => m.ProductBidPrice, new { @class = "form-control" }) <br />
+                @Html.HiddenFor(m => m.ProductBidPrice)
 
             </div>
 
-            <div style="font-size: large">
+            @*<div style="font-size: large">
                 <label style="color: black; font-size: large"> Max Price: </label>
-                @Html.DisplayFor(m => m.Max_Price, new { @class = "form-control" }) <br />
-                @Html.HiddenFor(m => m.Max_Price)
+                @Html.DisplayFor(m => m.MaxPrice, new { @class = "form-control" }) <br />
+                @Html.HiddenFor(m => m.MaxPrice)
 
-            </div>
+            </div>*@
 
             <div style="font-size: large">
                 <label style="color: black; font-size: large"> Current Highest Bid: </label>
@@ -63,20 +60,19 @@
                 @Html.DisplayFor(m => m.Status, new { @class = "form-control" }) <br />
                 @Html.HiddenFor(m => m.Status)
 
-                @Html.HiddenFor(m => m.ProductType_Id)
-                @Html.HiddenFor(m => m.ProductID)
+                @Html.HiddenFor(m => m.ProductTypeId)
+                @Html.HiddenFor(m => m.ProductId)
             </div>
 
             if (Model.Status != "Active")
             {
-                <input type="submit" value="Submit" style="color:white; background-color:gray; font-size: large" disabled="disabled"/>
+                <input type="submit" value="Submit" style="color:white; background-color:gray; font-size: large" disabled="disabled" />
             }
             else
             {
-                <input type="submit" value="Submit" style="color:white; background-color:cornflowerblue; font-size: large"/>
+                <input id="updateProduct" type="submit" value="Submit" style="color:white; background-color:cornflowerblue; font-size: large" />
             }
         }
-
 
     </div>
 </body>

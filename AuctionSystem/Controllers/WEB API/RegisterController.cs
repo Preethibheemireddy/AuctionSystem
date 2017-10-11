@@ -5,9 +5,9 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Auction.Database;
-using AuctionModel;
-using AuctionBuisinessLogic;
+using Auction.Model.Message;
 using Auction.Model;
+using Auction.BusinessLogic;
 
 namespace AuctionSystemWebApi.Controllers
 {
@@ -19,7 +19,7 @@ namespace AuctionSystemWebApi.Controllers
         public IHttpActionResult Register()
         {
             PaymentMethodTypes paymentMethodTypesResponse = new PaymentMethodTypes();
-            var paymentMethods = CustomerRegistration.Payment();
+            var paymentMethods = CustomerRegistration.GetPaymentMethodOptions();
             if (paymentMethods.Count == 0)
                 paymentMethodTypesResponse.Fault = new Auction.Model.Data.Error { Code = ErrorCodes.NoPaymentOptions, Message = "There are no payment options" };
             else
@@ -30,7 +30,7 @@ namespace AuctionSystemWebApi.Controllers
         // POST: api/Register
         [Route("api/Register")]
         [HttpPost]
-        public IHttpActionResult Register([FromBody] RegisterRequest register)
+        public IHttpActionResult Register([FromBody]RegisterRequest register)
         {
             try
             {
@@ -40,7 +40,7 @@ namespace AuctionSystemWebApi.Controllers
                 }
                 else
                 {
-                    return Ok(CustomerRegistration.Payment());
+                    return Ok(CustomerRegistration.GetPaymentMethodOptions());
                 }
             }
             catch (Exception ex)

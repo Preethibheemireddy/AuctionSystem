@@ -5,7 +5,6 @@
 
 <body style="background-color:white; ">
 
-
     <div style="
         display:inline;
         position: absolute;
@@ -14,28 +13,24 @@
         width: auto;
         height: auto;
         margin: auto;">
-        
-
 
         @if (Model.Products.Count != 0)
         {
-
             for (int i = 0; i < Model.Products.Count; i++)
             {
-                var Name = Model.Products[i].Product_Name;
+                var Name = Model.Products[i].ProductName;
                 <table>
-
                     <tr style="color:black">
                         <td style="font-size: large">
-                            @Html.ActionLink(Name, "DisplayCustomerProduct", "Product", new { productid = Model.Products[i].ProductID }, null)
+                            @Html.ActionLink(Name, "DisplayCustomerProduct", "Product", new { productid = Model.Products[i].ProductId }, null)
                             <br />
                             @Html.Label("End Date:")
-                            @Html.DisplayFor(model => model.Products[i].Product_bid_time, new { @class = "" })
+                            @Html.DisplayFor(model => model.Products[i].ProductBidTime)
 
                         </td>
-
                     </tr>
                 </table>
+                <hr />
             }
         }
 
@@ -47,8 +42,6 @@
                 </tr>
             </table>
         }
-
-
 
     </div>
 </body>

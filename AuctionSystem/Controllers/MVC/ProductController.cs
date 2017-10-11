@@ -7,7 +7,6 @@ using Auction.Model.Message;
 using System.Net.Http;
 using Auction.Database;
 using Auction.Model.Data;
-using AuctionModel;
 using System.Configuration;
 
 namespace AuctionSystemWebApi.Controllers.MVC
@@ -66,7 +65,7 @@ namespace AuctionSystemWebApi.Controllers.MVC
                 client.BaseAddress = new Uri(ConfigurationManager.AppSettings["WebApiBaseUrl"]);
 
                 //HTTP GET
-                var responseMessageTask = client.GetAsync("api/Product?customerid=" + id);
+                var responseMessageTask = client.GetAsync("api/Products?customerid=" + id);
                 responseMessageTask.Wait();
                 var responseMessage = responseMessageTask.Result;
                 if (responseMessage.IsSuccessStatusCode)
@@ -95,7 +94,7 @@ namespace AuctionSystemWebApi.Controllers.MVC
             if (customerinfo == null)
                 return RedirectToActionPermanent("Index", "Login");
 
-            ProductModel productModel = new ProductModel();
+            Product productModel = new Product();
 
             using (var client = new HttpClient())
             {
@@ -107,7 +106,7 @@ namespace AuctionSystemWebApi.Controllers.MVC
                 var responseMessage = responseMessageTask.Result;
                 if (responseMessage.IsSuccessStatusCode)
                 {
-                    var responseContentTask = responseMessage.Content.ReadAsAsync<ProductModel>();
+                    var responseContentTask = responseMessage.Content.ReadAsAsync<Product>();
                     responseContentTask.Wait();
                     productModel = responseContentTask.Result;
                     // TempData["products"] = productResponse.Products;
@@ -151,10 +150,10 @@ namespace AuctionSystemWebApi.Controllers.MVC
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(ConfigurationManager.AppSettings["WebApiBaseUrl"]);
-                product.Customer_Id = customerinfo.CustomerId;
+                product.CustomerId = customerinfo.CustomerId;
 
                 //HTTP POST
-                var responseMessageTask = client.PostAsJsonAsync<ProductRequest>("api/Product/UpdateProducts", product);
+                var responseMessageTask = client.PostAsJsonAsync<ProductRequest>("api/Product/UpdateProduct", product);
                 responseMessageTask.Wait();
 
                 var responseMessage = responseMessageTask.Result;
@@ -223,7 +222,7 @@ namespace AuctionSystemWebApi.Controllers.MVC
             if (customerinfo == null)
                 return RedirectToActionPermanent("Index", "Login");
 
-            ProductModel productResponse = new ProductModel();
+            Product productResponse = new Product();
             ViewData["BidPrice"] = 0;
             using (var client = new HttpClient())
             {
@@ -235,7 +234,7 @@ namespace AuctionSystemWebApi.Controllers.MVC
                 var responseMessage = responseMessageTask.Result;
                 if (responseMessage.IsSuccessStatusCode)
                 {
-                    var responseContentTask = responseMessage.Content.ReadAsAsync<ProductModel>();
+                    var responseContentTask = responseMessage.Content.ReadAsAsync<Product>();
                     responseContentTask.Wait();
                     productResponse = responseContentTask.Result;
                 }
@@ -280,7 +279,7 @@ namespace AuctionSystemWebApi.Controllers.MVC
                     var responseContentTask = responseMessage.Content.ReadAsAsync<ProductTypesResponse>();
                     responseContentTask.Wait();
                     productTypesResponse = responseContentTask.Result;
-                    TempData["products"] = productTypesResponse.Products;
+                    TempData["products"] = productTypesResponse.ProductTypes;
                     TempData.Keep();
                 }
                 else //web api sent error response 
@@ -303,7 +302,7 @@ namespace AuctionSystemWebApi.Controllers.MVC
 
             ProductResponse productResponse = new ProductResponse();
             ViewBag.LoginSuccess = "True";
-            product.Customer_Id = customerinfo.CustomerId;
+            product.CustomerId = customerinfo.CustomerId;
             if (!ModelState.IsValid)
             {
                 TempData.Keep();
@@ -313,7 +312,7 @@ namespace AuctionSystemWebApi.Controllers.MVC
             {
                 client.BaseAddress = new Uri(ConfigurationManager.AppSettings["WebApiBaseUrl"]);
                 //HTTP POST
-                var responseMessageTask = client.PostAsJsonAsync<ProductRequest>("api/Product", product);
+                var responseMessageTask = client.PostAsJsonAsync<ProductRequest>("api/CreateProduct", product);
                 responseMessageTask.Wait();
                 var responseMessage = responseMessageTask.Result;
                 if (responseMessage.IsSuccessStatusCode)

@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Auction.Model.Message;
-using Auction.BuisinessLogic;
+using Auction.BusinessLogic;
 using Auction.Model;
 using Auction.Model.Data;
 
@@ -14,10 +14,10 @@ namespace AuctionSystemWebApi.Controllers
     public class ProductController : ApiController
     {
         // GET: api/Product/5
-        [Route("api/Product")]
+        [Route("api/Products")]
         public IHttpActionResult GetProductsByCustomerId(int customerid)
         {
-            var products = CustomerProduct.GetProducts(customerid);
+            var products = CustomerProduct.GetCustomerProducts(customerid);
             return Ok(products);
         }
 
@@ -26,13 +26,6 @@ namespace AuctionSystemWebApi.Controllers
         {
             var product = CustomerProduct.GetProduct(productId);
             return Ok(product);
-        }
-
-        [Route("api/Product")]
-        public IHttpActionResult GetProductById(int productId)
-        {
-            var products = CustomerProduct.GetProducts(productId);
-            return Ok(products);
         }
 
         //Retrieve all product types.
@@ -52,8 +45,8 @@ namespace AuctionSystemWebApi.Controllers
         }
 
         // POST products to database
-        [Route("api/Product")]
-        public IHttpActionResult UserProduct([FromBody] ProductRequest product)
+        [Route("api/CreateProduct")]
+        public IHttpActionResult CreateProduct([FromBody]ProductRequest productRequest)
         {
             try
             {
@@ -63,7 +56,7 @@ namespace AuctionSystemWebApi.Controllers
                     products.Error = new Error { Code = ErrorCodes.ModelStateInvalid, Message = "Model state is invalid" };
                     return Ok(products);
                 }
-                var Product = CustomerProduct.Products(product);
+                var Product = CustomerProduct.CreateProduct(productRequest);
                 return Ok(Product);
             }
             catch (Exception ex)
@@ -73,8 +66,8 @@ namespace AuctionSystemWebApi.Controllers
         }
 
         // PUT: api/Product/5
-        [Route("api/Product/UpdateProducts")]
-        public IHttpActionResult UpdateProducts([FromBody] ProductRequest product)
+        [Route("api/Product/UpdateProduct")]
+        public IHttpActionResult UpdateProduct([FromBody] ProductRequest productRequest)
         {
             try
             {
@@ -84,7 +77,7 @@ namespace AuctionSystemWebApi.Controllers
                     products.Error = new Error { Code = ErrorCodes.ModelStateInvalid, Message = "Model state is invalid" };
                     return Ok(products);
                 }
-                var Product = CustomerProduct.UpdateProducts(product);
+                var Product = CustomerProduct.UpdateProduct(productRequest);
                 return Ok(Product);
             }
             catch (Exception ex)

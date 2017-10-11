@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using AuctionModel;
 using Auction.Database;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Configuration;
+using Auction.Model.Message;
 
 namespace AuctionSystemWebApi.Controllers.MVC
 {

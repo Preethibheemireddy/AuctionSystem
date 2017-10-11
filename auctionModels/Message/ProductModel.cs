@@ -9,80 +9,83 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Auction.Model.Message
 {
-   public class ProductRequest
+    public class ProductRequest
     {
-        public int? ProductType_Id { get; set; }
+        public int? ProductTypeId { get; set; }
         public int ProductID { get; set; }
 
-       [Required]
+        [Required]
         [Display(Name = "Product Name")]
-        public string Product_Name { get; set; }
+        public string ProductName { get; set; }
+
         [Required]
         [Display(Name = "Product bid price")]
-        public double Product_bid_price { get; set; }
+        public double ProductBidPrice { get; set; }
 
         [Display(Name = "product bid time")]
         [Required]
-        public System.DateTime Product_bid_time { get; set; }
-        public int? Customer_Id { get; set; }
+        public System.DateTime ProductBidTime { get; set; }
+        public int? CustomerId { get; set; }
 
         [Display(Name = "product description")]
         [Required]
-        public string Product_description { get; set; }
+        public string ProductDescription { get; set; }
 
-        [Required]
+
         [Display(Name = "Max price")]
-
-        public double Max_Price { get; set; }
-
+        public double MaxPrice { get; set; }
     }
 
-    public class ProductModel
+    public class ProductResponse
     {
-        public int? ProductType_Id { get; set; }
-        public int ProductID { get; set; }
+        public List<Product> Products { get; set; }
+        public Error Error { get; set; }
+        public double BidPrice { get; set; }
+    }
+
+
+    public class Product
+    {
+        public int? ProductTypeId { get; set; }
+        public int ProductId { get; set; }
+
         [Display(Name = "Product Name")]
         [Required]
-        public string Product_Name { get; set; }
+        public string ProductName { get; set; }
+
         [Required]
         [Display(Name = "Product bid price")]
-        public double Product_bid_price { get; set; }
-        [Required]
-        [Display(Name = "product bid time")]
-        public System.DateTime Product_bid_time { get; set; }
+        public double ProductBidPrice { get; set; }
 
-        public int? Customer_Id { get; set; }
+        public double BidPrice { get; set; }
+
         [Required]
-        [Display(Name = "product description")]
-        public string Product_description { get; set; }
+        [Display(Name = "Product bid time")]
+        public string ProductBidTime { get; set; }
+
+        public int? CustomerId { get; set; }
+
+        [Required]
+        [Display(Name = "Product description")]
+        public string ProductDescription { get; set; }
+
         [Required]
         [Display(Name = "Max price")]
-        public double Max_Price { get; set; }
+        public double MaxPrice { get; set; }
         public string Status { get; set; }
         public string StatusReason { get; set; }
         public double CurrentHighestBid { get; set; }
     }
 
-    public class ProductResponse
-    {
-        public List<ProductModel> Products { get; set; }
-        public Error Error { get; set; }
-        public double Bid_price { get; set; }
-    }
-
-    
-
-
     public class ProductTypes
     {
-        public int ProductType_Id { get; set; }
-        public string Product_type { get; set; }
-        
+        public int ProductTypeId { get; set; }
+        public string ProductType { get; set; }
     }
 
     public class ProductTypesResponse
     {
-       public List <ProductTypes> Products { get; set; }
+        public List<ProductTypes> ProductTypes { get; set; }
         public Error Fault { get; set; }
     }
 }

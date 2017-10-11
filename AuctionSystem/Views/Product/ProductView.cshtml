@@ -1,4 +1,4 @@
-﻿@model Auction.Model.Message.ProductModel
+﻿@*@model Auction.Model.Message.Product
 @{
     ViewBag.Title = "ProductView";
 }
@@ -22,13 +22,13 @@
                 using (Html.BeginForm("UserBid", "Auction", FormMethod.Post))
                 {
 
-                double? Bid_price = ViewData["BidPrice"] as double?;
+                double? BidPrice = ViewData["BidPrice"] as double?;
                 <table>
 
                     <tr style="color:black">
                         <td style= "width: auto; height: 100px; font:600; font-family: 'Times New Roman', Times, serif">
                             @Html.Label("Product") <br />
-                            @Html.DisplayFor(model => model.product.Product_Name, new { @class = "" }) <br />
+                            @Html.DisplayFor(model => model.produ, new { @class = "" }) <br />
 
                             @Html.Label("Description") <br />
                             @Html.DisplayFor(model => model.product.Product_description, new { @class = "" }) <br />
@@ -83,7 +83,7 @@
 
 
     </div>
-</body>
+</body>*@
 
 
 

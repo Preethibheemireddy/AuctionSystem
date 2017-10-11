@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Auction.Model.Data
 {
-  public  class Error
+    public class Error
     {
         public ErrorCodes Code { get; set; }
         public string Message { get; set; }

@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Auction.Model.Data
 {
-  public class AuctionDetails
+    public class AuctionDetails
     {
-
         public int auctionid { get; set; }
         public int customerid { get; set; }
     }

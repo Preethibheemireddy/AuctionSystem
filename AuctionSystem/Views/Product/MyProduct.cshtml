@@ -1,4 +1,4 @@
-﻿@model Auction.Model.Message.ProductModel
+﻿@model Auction.Model.Message.Product
 @{
     ViewBag.Title = "MyProduct";
 }
@@ -17,44 +17,42 @@
 
         @if (Model != null)
         {
+
             @Html.ValidationSummary(true, "Please correct the errors and try again.", new { @class = "text-danger" })
             using (Html.BeginForm("UserBid", "Auction", FormMethod.Post))
             {
-              
-                double? Bid_price = ViewData["BidPrice"] as double?;
+
+                double? BidPrice = ViewData["BidPrice"] as double?;
                 <table>
 
                     <tr style="color:black">
                         <td style="width: auto; height: 100px; font:600; font-family: 'Times New Roman', Times, serif; font-size: large">
-                            @Html.Label("Product") <br />
-                            @Html.DisplayFor(model => model.Product_Name, new { @class = "" }) <br />
-                            @Html.HiddenFor(model => model.ProductID, new { @class = "" })
+                            @Html.Label("Product:") 
+                            @Html.DisplayFor(model => model.ProductName, new { @class = "form-control" }) <br />
+                            @Html.HiddenFor(model => model.ProductId)
 
-                            @Html.Label("Description") <br />
-                            @Html.DisplayFor(model => model.Product_description, new { @class = "" }) <br />
+                            @Html.Label("Description:") 
+                            @Html.DisplayFor(model => model.ProductDescription, new { @class = "form-control" }) <br />
 
-                            @Html.Label("End Date") <br />
-                            @Html.DisplayFor(model => model.Product_bid_time, new { @class = "" }) <br />
-                            @Html.HiddenFor(model => model.Product_bid_time, new { @class = "" })
+                            @Html.Label("End Date:") 
+                            @Html.DisplayFor(model => model.ProductBidTime, new { @class = "form-control" }) <br />
+                            @Html.HiddenFor(model => model.ProductBidTime)
 
-                            @Html.Label("Status") <br />
-                            @Html.DisplayFor(model => model.Status, new { @class = "" }) <br />
+                            @Html.Label("Status:") 
+                            @Html.DisplayFor(model => model.Status, new { @class = "form-control" }) <br />
 
                             @if (Model.CurrentHighestBid == 0)
                             {
-                                @Html.Label("Min Bid Price")                                <br />
-                                @Html.DisplayFor(model => model.Product_bid_price, new { @class = "" }) <br />
+                                @Html.Label("Min Bid Price:")                                
+                                @Html.DisplayFor(model => model.ProductBidPrice, new { @class = "form-control" }) <br />
 
                             }
                             else
                             {
-                                @Html.Label("Current Highest Bid") <br />
+                                @Html.Label("Current Highest Bid:") 
 
-                                @Html.DisplayFor(model => model.CurrentHighestBid, new { @class = "" }) <br />
+                                @Html.DisplayFor(model => model.CurrentHighestBid, new { @class = "form-control" }) <br />
                             }
-
-
-
                         </td>
 
                     </tr>
@@ -62,16 +60,13 @@
 
                 <div>
                     <label style="color: black; font-size: large"> Bid Price: </label>
-                    @Html.TextBox("Bid_price",  Bid_price ) <br />
-                   
-                </div> 
+                    @Html.TextBox("BidPrice", BidPrice, new { @id = "submitBidPrice", autocomplete = "off" }) <br />
+
+                </div>
                 <br />
 
-                <input type="submit" value="Submit" style="color:white; background-color:cornflowerblue; font-size: large" />
+                <input id="submitBid" type="submit" value="Submit" style="color:white; background-color:cornflowerblue; font-size: large" />
             }
-
-
-
         }
 
         else
@@ -82,8 +77,6 @@
                 </tr>
             </table>
         }
-
-
     </div>
 </body>
 

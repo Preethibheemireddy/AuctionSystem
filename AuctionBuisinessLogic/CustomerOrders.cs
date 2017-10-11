@@ -8,71 +8,70 @@ using Auction.Database;
 using Auction.Model;
 using Auction.Model.Data;
 
-namespace Auction.BuisinessLogic
+namespace Auction.BusinessLogic
 {
    public  class CustomerOrders
     {
         //To retreive customer orders with customerid
-        public static OrdersResponse GetUserOrders(int customerid)
-        {
-            
-            OrdersResponse UserOrders = new OrdersResponse();
+        public static string format = "MMM d yyyy";
 
+        #region Get Customer Orders
+        public static OrdersResponse GetCustomerOrders(int customerid)
+        {
+            OrdersResponse ordersResponse = new OrdersResponse();
             AuctionSystemEntities auctionEntities = new AuctionSystemEntities();
 
             var orders = auctionEntities.orders.Where(c => c.customer_id == customerid).ToList();
-
             if (orders == null)
             {
-                UserOrders.Fault = new Error { Code = ErrorCodes.NoOrders, Message = "There are no orders for this customer" };
-
-                return UserOrders;
+                ordersResponse.Fault = new Error { Code = ErrorCodes.NoOrders, Message = "There are no orders for this customer" };
+                return ordersResponse;
             }
 
-            UserOrders.CustomerOrders = new List<Orders>();
+            ordersResponse.CustomerOrders = new List<Order>();
 
-            foreach (Database.order item in orders)
+            foreach (order order in orders)
             {
-                Orders customer_orders = new Orders();
-                customer_orders.Auction_Id = item.auction_id;
-                customer_orders.Customer_Id = item.customer_id;
-                customer_orders.CustomerPayment_ID = item.customer_payment_id;
-                customer_orders.Order_amount = item.order_amount;
-                customer_orders.Order_datetime = item.order_datetime;
-                customer_orders.Order_ID = item.id;
-                customer_orders.Status = item.customer_status.status;
-                customer_orders.StatusReason = item.status_reason.reason;
-                customer_orders.Product_name = item.auction.product.product_Name;
-                customer_orders.Product_description = item.auction.product.product_description;
-                UserOrders.CustomerOrders.Add(customer_orders);
-
+                Order customerOrders = new Order();
+                customerOrders.AuctionId = order.auction_id;
+                customerOrders.CustomerId = order.customer_id;
+                customerOrders.CustomerPaymentId = order.customer_payment_id;
+                customerOrders.OrderAmount = order.order_amount;
+                customerOrders.OrderDatetime = order.order_datetime.ToString(format);
+                customerOrders.OrderId = order.id;
+                customerOrders.Status = order.customer_status.status;
+                customerOrders.StatusReason = order.status_reason.reason;
+                customerOrders.ProductName = order.auction.product.product_Name;
+                customerOrders.ProductDescription = order.auction.product.product_description;
+                ordersResponse.CustomerOrders.Add(customerOrders);
             }
-
-
-            return UserOrders;
+            return ordersResponse;
         }
-//To retrieve customer order with orderid
-        public static Orders GetOrder(int orderid)
+        #endregion Get Customer Orders
+
+        #region Get Order
+        //To retrieve customer order with orderid
+        public static Order GetOrder(int orderid)
         {
-            Orders customerorder = new Orders();
+            Order customerorder = new Order();
             AuctionSystemEntities auctionEntities = new AuctionSystemEntities();
+
             var order = auctionEntities.orders.Where(c => c.id == orderid).FirstOrDefault();
             if (order == null)
-            {
                 return customerorder;
 
-            }
-            customerorder.Order_ID = order.id;
-            customerorder.Auction_Id = order.auction_id;
-            customerorder.Customer_Id = order.customer_id;
-            customerorder.CustomerPayment_ID = order.customer_payment_id;
-            customerorder.Order_amount = order.order_amount;
-            customerorder.Order_datetime = order.order_datetime;
-            customerorder.Product_name = order.auction.product.product_Name;
-            customerorder.Product_description = order.auction.product.product_description;
+            customerorder.OrderId = order.id;
+            customerorder.AuctionId = order.auction_id;
+            customerorder.CustomerId = order.customer_id;
+            customerorder.CustomerPaymentId = order.customer_payment_id;
+            customerorder.OrderAmount = order.order_amount;
+            customerorder.OrderDatetime = order.order_datetime.ToString(format);
+            customerorder.ProductName = order.auction.product.product_Name;
+            customerorder.ProductDescription = order.auction.product.product_description;
             customerorder.Status = order.customer_status.status;
             customerorder.StatusReason = order.status_reason.reason;
             return customerorder;
         }
+        #endregion Get Order
     }
 }

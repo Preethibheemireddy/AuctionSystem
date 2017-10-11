@@ -7,7 +7,6 @@ using Auction.Model.Message;
 using System.Net.Http;
 using Auction.Database;
 using Auction.Model.Data;
-using AuctionModel;
 using System.Configuration;
 
 namespace AuctionSystemWebApi.Controllers.MVC
@@ -25,22 +24,22 @@ namespace AuctionSystemWebApi.Controllers.MVC
 
             AuctionResponse auctionResponse = new AuctionResponse();
             ViewBag.LoginSuccess = "True";
-            auction.Customer_Id = customerinfo.CustomerId;
+            auction.CustomerId = customerinfo.CustomerId;
             if (!ModelState.IsValid)
             {
                 TempData["Error"] = "Bid Price is required";
-                return RedirectToAction("GetProductWithProductid", "Product", new { productid = auction.ProductID });
+                return RedirectToAction("GetProductWithProductid", "Product", new { productid = auction.ProductId });
             }
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(ConfigurationManager.AppSettings["WebApiBaseUrl"]);
                 //HTTP POST
-                var responseMessageTask = client.PostAsJsonAsync<AuctionRequest>("api/Auction/CustomerBid", auction);
+                var responseMessageTask = client.PostAsJsonAsync<AuctionRequest>("api/Auction/CreateBid", auction);
                 responseMessageTask.Wait();
                 var responseMessage = responseMessageTask.Result;
                 if (responseMessage.IsSuccessStatusCode)
                 {
-                    var responseContentTask = responseMessage.Content.ReadAsAsync<AuctionResponse>();
+                    var responseContentTask = responseMessage.Content.ReadAsAsync<Auction.Model.Message.AuctionResponse>();
                     responseContentTask.Wait();
                     auctionResponse = responseContentTask.Result;
                     if (auctionResponse.Error == null)
@@ -48,12 +47,12 @@ namespace AuctionSystemWebApi.Controllers.MVC
                         return RedirectToActionPermanent("GetMyBids", "Auction");
                     }
                     TempData["Error"] = auctionResponse.Error.Message;
-                    return RedirectToAction("GetProductWithProductid", "Product", new { productid = auction.ProductID });
+                    return RedirectToAction("GetProductWithProductid", "Product", new { productid = auction.ProductId });
                 }
                 else
                 {
                     TempData["Error"] = "Server error. Please contact administrator.";
-                    return RedirectToAction("GetProductWithProductid", "Product", new { productid = auction.ProductID });
+                    return RedirectToAction("GetProductWithProductid", "Product", new { productid = auction.ProductId });
                 }
             }
         }
@@ -61,7 +60,6 @@ namespace AuctionSystemWebApi.Controllers.MVC
 
         #region GetMyBids
         //To display customer bids with customer id
-        [Route("Auction/GetMyBids")]
         public ActionResult GetMyBids()
         {
             LoginModelResponse customerinfo = (LoginModelResponse)Session["Customer"];
@@ -104,7 +102,7 @@ namespace AuctionSystemWebApi.Controllers.MVC
             LoginModelResponse customerinfo = (LoginModelResponse)Session["Customer"];
             if (customerinfo == null)
                 return RedirectToActionPermanent("Index", "Login");
-            UserAuction userAuction = new UserAuction();
+            Auction.Model.Message.Auction userAuction = new Auction.Model.Message.Auction();
             ViewBag.LoginSuccess = "True";
             using (var client = new HttpClient())
             {
@@ -115,7 +113,7 @@ namespace AuctionSystemWebApi.Controllers.MVC
                 var responseMessage = responseMessageTask.Result;
                 if (responseMessage.IsSuccessStatusCode)
                 {
-                    var responseContentTask = responseMessage.Content.ReadAsAsync<UserAuction>();
+                    var responseContentTask = responseMessage.Content.ReadAsAsync<Auction.Model.Message.Auction>();
                     responseContentTask.Wait();
                     userAuction = responseContentTask.Result;
                     TempData["Bid"] = userAuction;
@@ -123,10 +121,10 @@ namespace AuctionSystemWebApi.Controllers.MVC
                     if (TempData["Error"] != null)
                     {
 
-                        ModelState.AddModelError("", TempData["Error"].ToString() );
+                        ModelState.AddModelError("", TempData["Error"].ToString());
                         TempData["Error"] = null;
                     }
-                    return View("CustomerBid",userAuction);
+                    return View("CustomerBid", userAuction);
                 }
                 else //web api sent error response 
                 {
@@ -134,14 +132,14 @@ namespace AuctionSystemWebApi.Controllers.MVC
                     return View("MyBids", userAuction);
                 }
             }
-            
+
         }
         #endregion BidDetail
 
         #region UpdateCustomerBid
         //To update customer bid
         [Route("Auction/UpdateCustomerBid")]
-        public ActionResult UpdateCustomerBid(UserAuction auction)
+        public ActionResult UpdateCustomerBid(Auction.Model.Message.Auction auction)
         {
             LoginModelResponse customerinfo = (LoginModelResponse)Session["Customer"];
             if (customerinfo == null)
@@ -149,17 +147,17 @@ namespace AuctionSystemWebApi.Controllers.MVC
 
             AuctionResponse auctionResponse = new AuctionResponse();
             ViewBag.LoginSuccess = "True";
-            auction.Customer_Id = customerinfo.CustomerId;
+            auction.CustomerId = customerinfo.CustomerId;
             if (!ModelState.IsValid)
             {
                 TempData["Error"] = "Bid Price is required";
-                return RedirectToAction("MyBidDetail", new { auctionid = auction.Auction_Id});
+                return RedirectToAction("MyBidDetail", new { auctionid = auction.AuctionId });
             }
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(ConfigurationManager.AppSettings["WebApiBaseUrl"]);
                 //HTTP POST
-                var responseMessageTask = client.PostAsJsonAsync<UserAuction>("api/Auction/UpdateBid", auction);
+                var responseMessageTask = client.PostAsJsonAsync<Auction.Model.Message.Auction>("api/Auction/UpdateBid", auction);
                 responseMessageTask.Wait();
                 var responseMessage = responseMessageTask.Result;
                 if (responseMessage.IsSuccessStatusCode)
@@ -172,12 +170,12 @@ namespace AuctionSystemWebApi.Controllers.MVC
                         return RedirectToActionPermanent("GetMyBids", "Auction");
                     }
                     TempData["Error"] = auctionResponse.Error.Message;
-                    return RedirectToAction("MyBidDetail", new { auctionid = auction.Auction_Id });
+                    return RedirectToAction("MyBidDetail", new { auctionid = auction.AuctionId });
                 }
                 else
                 {
                     TempData["Error"] = "Server error";
-                    return RedirectToAction("MyBidDetail", new { auctionid = auction.Auction_Id });
+                    return RedirectToAction("MyBidDetail", new { auctionid = auction.AuctionId });
                 }
             }
         }

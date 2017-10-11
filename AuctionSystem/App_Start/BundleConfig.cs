@@ -10,6 +10,8 @@ namespace AuctionSystemWebApi
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
+            bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
+                        "~/Scripts/jquery-ui-1.12.1.js"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at https://modernizr.com to pick only the tests you need.
@@ -22,7 +24,11 @@ namespace AuctionSystemWebApi
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/themes/base/jquery-ui.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/validation").Include(
+                      "~/Scripts/Validation.js"));
         }
     }
 }

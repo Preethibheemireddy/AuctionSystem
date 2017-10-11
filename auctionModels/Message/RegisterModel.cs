@@ -7,11 +7,10 @@ using Auction.Database;
 using Auction.Model.Data;
 using System.ComponentModel.DataAnnotations;
 
-namespace AuctionModel
+namespace Auction.Model.Message
 {
     public class RegisterRequest
     {
-        
         public int CustomerId { get; set; }
 
         [Display(Name = "Last Name")]
@@ -38,8 +37,8 @@ namespace AuctionModel
         [Display(Name = "Confirm Password")]
         [Required]
         public string ConfirmPassword { get; set; }
-        
-        public int AddressId { get; set; }
+
+        //public int AddressId { get; set; }
 
         [Display(Name = "Address")]
         [Required]
@@ -65,8 +64,7 @@ namespace AuctionModel
 
         [Display(Name = "Payment Method")]
         [Required]
-        public int PaymentMethod { get; set; }
-
+        public int PaymentMethodId { get; set; }
 
         [Display(Name = "Card Number")]
         [Required]
@@ -83,8 +81,6 @@ namespace AuctionModel
         [Display(Name = "Card Holder Name")]
         [Required]
         public string CardHolderName { get; set; }
-
-
     }
 
     public class RegisterResponse
@@ -104,12 +100,9 @@ namespace AuctionModel
     }
 
 
-
     public class PaymentMethodOption
     {
         public int PaymentMethod_ID { get; set; }
         public string Payment_Method { get; set; }
-       
-
     }
 }

@@ -1,4 +1,4 @@
-﻿@model AuctionModel.RegisterRequest
+﻿@model Auction.Model.Message.RegisterRequest
 
 @{
     ViewBag.Title = "Index";
@@ -11,114 +11,114 @@
 
 @using (Html.BeginForm("Create", "Register", FormMethod.Post))
 {
-    List<AuctionModel.PaymentMethodOption> paymentTypes = TempData["PaymentMethodOptions"] as List<AuctionModel.PaymentMethodOption>;
+    List<Auction.Model.Message.PaymentMethodOption> paymentTypes = TempData["PaymentMethodOptions"] as List<Auction.Model.Message.PaymentMethodOption>;
     <div>
 
         <label> First Name: </label>
-        @Html.TextBoxFor( m => m.CustomerFirstName , new { @class = "form-control" }) <br />
+        @Html.TextBoxFor(m => m.CustomerFirstName, new { @class = "form-control", @id = "firstName", autocomplete = "off" }) <br />
 
         @Html.ValidationMessage("CustomerFirstName", "", new { @class = "text-danger" })
     </div>
 
-                <div>
-                    <label> Last Name: </label>
-                    @Html.TextBoxFor(m => m.CustomerLastName, new { @class = "form-control" }) <br />
+    <div>
+        <label> Last Name: </label>
+        @Html.TextBoxFor(m => m.CustomerLastName, new { @class = "form-control", @id = "lastName", autocomplete = "off" }) <br />
 
-                    @Html.ValidationMessage("CustomerLastName", "", new { @class = "text-danger" })
-                </div>
+        @Html.ValidationMessage("CustomerLastName", "", new { @class = "text-danger" })
+    </div>
 
                 <div>
                     <label> Phone Number: </label>
-                    @Html.TextBoxFor(m => m.CustomerPhone , new { @class = "form-control" }) <br />
+                    @Html.TextBoxFor(m => m.CustomerPhone, new { @class = "form-control", @id = "phoneNumber", autocomplete = "off" }) <br />
 
                     @Html.ValidationMessage("CustomerPhone", "", new { @class = "text-danger" })
                 </div>
 
                 <div>
                     <label> Email: </label>
-                    @Html.TextBoxFor(m => m.CustomerEmail, new { @class = "form-control" }) <br />
+                    @Html.TextBoxFor(m => m.CustomerEmail, new { @class = "form-control", @id = "email", autocomplete = "off" }) <br />
                     @Html.ValidationMessage("CustomerEmail", "", new { @class = "text-danger" })
                 </div>
 
                 <div>
                     <label> Password: </label>
-                    @Html.PasswordFor(m => m.CustomerPassword, new { @class = "form-control" }) <br />
+                    @Html.PasswordFor(m => m.CustomerPassword, new { @class = "form-control", @id = "password", autocomplete = "off" }) <br />
                     @Html.ValidationMessage("CustomerPassword", "", new { @class = "text-danger" })
                 </div>
 
                 <div>
                     <label> Confirm Password: </label>
-                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" }) <br />
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @id = "confirmPassword", autocomplete = "off" }) <br />
                     @Html.ValidationMessage("ConfirmPassword", "", new { @class = "text-danger" })
                 </div>
 
                 <div>
                     <label> Address1: </label>
-                    @Html.TextBoxFor(m => m.Address1, new { @class = "form-control" }) <br />
+                    @Html.TextBoxFor(m => m.Address1, new { @class = "form-control", @id = "address", autocomplete = "off" }) <br />
                     @Html.ValidationMessage("Address1", "", new { @class = "text-danger" })
                 </div>
 
                 <div>
                     <label> Address2: </label>
-                    @Html.TextBoxFor(m => m.Address2, new { @class = "form-control" })
+                    @Html.TextBoxFor(m => m.Address2, new { @class = "form-control", autocomplete = "off" })
                 </div>
 
                 <div>
                     <label> City: </label>
-                    @Html.TextBoxFor(m => m.City, new { @class = "form-control" }) <br />
+                    @Html.TextBoxFor(m => m.City, new { @class = "form-control", @id = "city", autocomplete = "off" }) <br />
                     @Html.ValidationMessage("City", "", new { @class = "text-danger" })
                 </div>
 
                 <div>
                     <label> State: </label>
-                    @Html.TextBoxFor(m => m.State, new { @class = "form-control" }) <br />
+                    @Html.TextBoxFor(m => m.State, new { @class = "form-control", @id = "state", autocomplete = "off" }) <br />
                     @Html.ValidationMessage("State", "", new { @class = "text-danger" })
                 </div>
 
                 <div>
                     <label> Zipcode: </label>
-                    @Html.TextBoxFor(m => m.Zipcode, new { @class = "form-control" }) <br />
+                    @Html.TextBoxFor(m => m.Zipcode, new { @class = "form-control", @id = "zipcode", autocomplete = "off" }) <br />
                     @Html.ValidationMessage("Zipcode", "", new { @class = "text-danger" })
                 </div>
 
                 <div>
                     <label> Country: </label>
-                    @Html.TextBoxFor(m => m.Country, new { @class = "form-control" }) <br />
+                    @Html.TextBoxFor(m => m.Country, new { @class = "form-control", @id = "country", autocomplete = "off" }) <br />
                     @Html.ValidationMessage("Country", "", new { @class = "text-danger" })
                 </div>
 
                 <div>
                     <label> Payment method: </label>
-    
-                    @Html.DropDownListFor(m => m.PaymentMethod, new SelectList(paymentTypes, "PaymentMethod_ID", "Payment_Method"), new { @class = "form-control" }) <br />
+
+                    @Html.DropDownListFor(m => m.PaymentMethodId, new SelectList(paymentTypes, "PaymentMethod_ID", "Payment_Method"), new { @class = "form-control" }) <br />
                     @Html.ValidationMessage("PaymentMethod", "", new { @class = "text-danger" })
                 </div>
 
                 <div>
                     <label> Card number: </label>
-                    @Html.TextBoxFor(m => m.CardNumber, new { @class = "form-control" }) <br />
+                    @Html.TextBoxFor(m => m.CardNumber, new { @class = "form-control", @id = "cardNumber", autocomplete = "off" }) <br />
                     @Html.ValidationMessage("CardNumber", "", new { @class = "text-danger" })
                 </div>
 
                 <div>
                     <label> Pin: </label>
-                    @Html.TextBoxFor(m => m.CardPin, new { @class = "form-control" }) <br />
+                    @Html.TextBoxFor(m => m.CardPin, new { @class = "form-control", @id = "pin", autocomplete = "off" }) <br />
                     @Html.ValidationMessage("CardPin", "", new { @class = "text-danger" })
                 </div>
 
                 <div>
                     <label> Card Expiry Date: </label>
-                    @Html.TextBoxFor(m => m.CardExpiryDate, new { @class = "form-control" }) <br />
+                    @Html.TextBoxFor(m => m.CardExpiryDate, new { @class = "form-control", @id = "cardExpiryDate", autocomplete = "off" }) <br />
                     @Html.ValidationMessage("CardExpiryDate", "", new { @class = "text-danger" })
                 </div>
 
                 <div>
                     <label> Card holder name: </label>
-                    @Html.TextBoxFor(m => m.CardHolderName, new { @class = "form-control" }) <br />
+                    @Html.TextBoxFor(m => m.CardHolderName, new { @class = "form-control", @id = "holderName", autocomplete = "off" }) <br />
                     @Html.ValidationMessage("CardHolderName", "", new { @class = "text-danger" })
                 </div>
 
-                <input type="submit" value="Register" style="color: white; background-color: cornflowerblue" />
+                <input id="register" type="submit" value="Register" style="color: white; background-color: cornflowerblue" />
 
 
 }
